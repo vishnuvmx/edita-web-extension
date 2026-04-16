@@ -1,0 +1,57 @@
+{
+  "manifest_version": 3,
+  "name": "Edita Tools Side Panel",
+  "version": "1.3.2",
+  "description": "Opens edita.tools UI over the webpage.",
+  "icon": "icon/logo-rounded.png",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "tabs",
+    "sidePanel",
+    "windows",
+    "downloads"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "action": {
+    "default_title": "Open Edita Tools",
+    "default_icon": {
+      "16": "icon/logo-rounded.png",
+      "32": "icon/logo-rounded.png",
+      "48": "icon/logo-rounded.png"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "sidepanel.html",
+        "sidepanel.css",
+        "tools/qr.html",
+        "tools/youtube-thumbnail.html",
+        "tools/uuid-generator.html",
+        "tools/fml-converter.html",
+        "tools/base-converter.html",
+        "tools/sip-calculator.html",
+        "tools/tool-base.css",
+        "tools/qr.js",
+        "tools/youtube-thumbnail.js",
+        "tools/uuid-generator.js",
+        "tools/fml-converter.js",
+        "tools/base-converter.js",
+        "tools/sip-calculator.js",
+        "icon/logo-icon.png",
+        "libs/qrcode.min.js",
+        "scripts/sidepanel/close-panel.js",
+        "scripts/sidepanel/tool-links.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}

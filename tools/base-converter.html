@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Base Converter</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .base-main {
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .base-main h1 {
+      font-size: 38px;
+      line-height: 1.08;
+      margin-bottom: 8px;
+    }
+
+    .converter {
+      color: var(--brand);
+    }
+
+    .base-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .base-section {
+      border-top: 1px solid #e0e7ff;
+      padding-top: 12px;
+    }
+
+    .base-section:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .convert-card {
+      background: linear-gradient(180deg, #f8fafc 0%, #eef6ff 100%);
+      border: 1px solid #d9e5f3;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.65);
+    }
+
+    .base-arrow {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--brand-dark);
+      font-size: 18px;
+      font-weight: 800;
+      align-self: center;
+      transform: rotate(90deg);
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 2px;
+    }
+
+    .action-row button {
+      margin-top: 0;
+    }
+
+    .output-value {
+      min-height: 54px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      padding: 12px;
+      background: #ffffff;
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+      word-break: break-word;
+      display: flex;
+      align-items: center;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .result-item {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+
+    .result-title {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #64748b;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .result-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    .note {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: -2px;
+    }
+
+    .control-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .swap-row {
+      display: grid;
+      grid-template-columns: 1fr 36px 1fr;
+      gap: 10px;
+      align-items: end;
+    }
+
+    .swap-row .base-arrow {
+      margin-bottom: 1px;
+    }
+
+    @media (min-width: 560px) {
+      .field-full {
+        grid-column: 1 / -1;
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to tools</a>
+    </div>
+
+    <section class="card base-main">
+      <h1>Base <span class="converter">Converter</span></h1>
+      <p>Convert numbers between binary, decimal, hexadecimal, and octal in a clean vertical layout made for the extension panel.</p>
+
+      <div class="base-layout">
+        <div class="base-section">
+          <span class="section-label">Convert Value</span>
+          <div class="convert-card">
+            <div class="field-grid">
+              <div class="field-full">
+                <label for="valueInput">NUMBER</label>
+                <input id="valueInput" type="text" placeholder="101101">
+              </div>
+
+              <div class="swap-row">
+                <div>
+                  <label for="inputBase">CONVERT FROM</label>
+                  <select id="inputBase">
+                    <option value="2">Binary</option>
+                    <option value="8">Octal</option>
+                    <option value="10" selected>Decimal</option>
+                    <option value="16">Hexadecimal</option>
+                  </select>
+                </div>
+
+                <div class="base-arrow" aria-hidden="true">→</div>
+
+                <div>
+                  <label for="outputBase">CONVERT TO</label>
+                  <select id="outputBase">
+                    <option value="2">Binary</option>
+                    <option value="8">Octal</option>
+                    <option value="10">Decimal</option>
+                    <option value="16" selected>Hexadecimal</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-row">
+              <button id="convertBtn" type="button">Convert</button>
+              <button id="swapBtn" type="button">Swap</button>
+            </div>
+            <div class="action-row">
+              <button id="copyBtn" type="button">Copy Result</button>
+              <button id="resetBtn" type="button">Reset</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="base-section">
+          <span class="section-label">Result</span>
+          <div class="output-value" id="primaryOutput">-</div>
+          <div class="note" id="status" role="status" aria-live="polite">Enter a value and convert between bases.</div>
+        </div>
+
+        <div class="base-section">
+          <span class="section-label">All Bases</span>
+          <div class="result-grid">
+            <div class="result-item">
+              <span class="result-title">Binary</span>
+              <div class="result-value" id="binaryOutput">-</div>
+            </div>
+            <div class="result-item">
+              <span class="result-title">Decimal</span>
+              <div class="result-value" id="decimalOutput">-</div>
+            </div>
+            <div class="result-item">
+              <span class="result-title">Hexadecimal</span>
+              <div class="result-value" id="hexOutput">-</div>
+            </div>
+            <div class="result-item">
+              <span class="result-title">Octal</span>
+              <div class="result-value" id="octalOutput">-</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <script src="base-converter.js"></script>
+</body>
+</html>

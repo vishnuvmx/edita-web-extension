@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Edita Tools</title>
+  <link rel="icon" type="image/png" href="icon/logo-icon.png">
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  
+  <div class="navbar">
+    <a href="https://edita.tools/" target="_blank" class="logo">
+      <img class="logo-icon" src="icon/logo-icon.png" alt="Edita logo">
+      edita
+    </a>
+    <button class="close-btn" id="closePanel" type="button" aria-label="Close panel">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <div class="hero">
+    <h1>The file tools<br><span class="highlight">you need.</span></h1>
+  </div>
+
+  <div class="tools-section">
+    <div class="tools-grid">
+      <a href="tools/qr.html" class="tool-card folder-card" data-tool="qr">
+        <div class="folder-graphic"></div>
+        <div class="folder-base">
+          <div class="folder-tab">TOOL</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">QR Generator</div>
+        </div>
+      </a>
+      
+      <a href="tools/youtube-thumbnail.html" class="tool-card" data-tool="youtube-thumbnail">
+        <div class="folder-graphic folder-yellow"></div>
+        <div class="folder-base">
+          <div class="folder-tab">MEDIA</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">YouTube Thumbnail</div>
+        </div>
+      </a>
+
+      <a href="tools/uuid-generator.html" class="tool-card" data-tool="uuid-generator">
+        <div class="folder-graphic folder-cyan"></div>
+        <div class="folder-base">
+          <div class="folder-tab">DEV</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">UUID Generator</div>
+        </div>
+      </a>
+
+      <a href="tools/fml-converter.html" class="tool-card" data-tool="fml-converter">
+        <div class="folder-graphic folder-orange"></div>
+        <div class="folder-base">
+          <div class="folder-tab">TEXT</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">FML Converter</div>
+        </div>
+      </a>
+
+      <a href="tools/sip-calculator.html" class="tool-card" data-tool="sip-calculator">
+        <div class="folder-graphic folder-purple"></div>
+        <div class="folder-base">
+          <div class="folder-tab">FINANCE</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">SIP Calculator</div>
+        </div>
+      </a>
+
+      <a href="tools/base-converter.html" class="tool-card" data-tool="base-converter">
+        <div class="folder-graphic folder-pink"></div>
+        <div class="folder-base">
+          <div class="folder-tab">MATH</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">Base Converter</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <script src="scripts/sidepanel/close-panel.js"></script>
+  <script src="scripts/sidepanel/tool-links.js"></script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>QR Generator</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .qr-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 600px) {
+      .qr-container {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .qr-left {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .qr-main {
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .qr-main h1 {
+      font-size: 42px;
+      line-height: 1.15;
+    }
+
+    .generator {
+        color: var(--brand);
+    }
+
+    .qr-main p {
+      font-size: 16px;
+    }
+
+    .qr-section {
+      border-top: 1px solid #e0e7ff;
+      padding-top: 12px;
+    }
+
+    .qr-section:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .color-input-group {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .color-input-group input[type="color"] {
+      width: 40px;
+      height: 38px;
+      padding: 2px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    .color-input-group input[type="text"] {
+      font-size: 15px;
+      flex: 1;
+    }
+
+    .qr-right {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .preview-hint {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 8px;
+    }
+
+    .qr-preview-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 260px;
+      aspect-ratio: 1;
+    }
+
+    .qr-preview-box svg,
+    .qr-preview-box img,
+    .qr-preview-box canvas {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
+    .qr-preview-box img {
+      display: block;
+      width: 100%;
+      height: auto;
+      user-select: none;
+      -webkit-user-drag: none;
+      image-rendering: pixelated;
+    }
+
+    .qr-empty-state {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to tools</a>
+    </div>
+
+    <section class="card qr-main">
+      <h1>QR <span class="generator">Generator</span></h1>
+      <p>Open this from a website and it will prefill the current page URL. Right-click the QR image to save it.</p>
+
+      <div class="qr-container">
+        <div class="qr-left">
+          <div class="qr-section">
+            <span class="section-label">QR Content</span>
+            <label for="qrInput">URL / Text</label>
+            <input id="qrInput" type="text" placeholder="https://edita.tools">
+            <div class="preview-hint">The QR image updates automatically as you type.</div>
+          </div>
+
+          <div class="qr-section">
+            <span class="section-label">QR Color</span>
+            <div class="color-input-group">
+              <input id="qrColor" type="color" value="#000000">
+              <input id="qrColorText" type="text" placeholder="#000000" maxlength="7">
+            </div>
+          </div>
+        </div>
+
+        <div class="qr-right">
+          <span class="section-label">Preview</span>
+          <div class="qr-preview-box" id="qrPreview">
+            <div class="qr-empty-state">Open the tool from a website to auto-fill the current URL</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="qr.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>YouTube Thumbnail</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .thumbnail-main {
+      font-size: 16px;
+      line-height: 1.55;
+      overflow: hidden;
+    }
+
+    .thumbnail-main h1 {
+      font-size: 40px;
+      line-height: 1.08;
+      margin-bottom: 8px;
+      word-break: break-word;
+    }
+
+    .thumbnail {
+      color: var(--brand);
+    }
+
+    .thumbnail-main p {
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+
+    .yt-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .yt-left,
+    .yt-right {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .thumbnail-section {
+      border-top: 1px solid #e0e7ff;
+      padding-top: 12px;
+    }
+
+    .thumbnail-section:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .preview-hint {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 8px;
+    }
+
+    .preview-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      min-height: 220px;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .preview-box img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 13px;
+      max-width: 220px;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .action-row button {
+      margin-top: 0;
+    }
+
+    .action-row button:disabled {
+      opacity: 0.45;
+    }
+
+    .thumbnail-status {
+      min-height: 20px;
+      font-size: 13px;
+      color: #64748b;
+      word-break: break-word;
+    }
+
+    .thumbnail-status[data-tone='success'] {
+      color: #047857;
+    }
+
+    .thumbnail-status[data-tone='error'] {
+      color: #b91c1c;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to tools</a>
+    </div>
+
+    <section class="card thumbnail-main">
+      <h1>YouTube <span class="thumbnail">Thumbnail</span></h1>
+      <p>Open this from a YouTube watch page to auto-fill the URL and preview the thumbnail. Otherwise, paste a YouTube link manually.</p>
+
+      <div class="yt-layout">
+        <div class="yt-left">
+          <div class="thumbnail-section">
+            <span class="section-label">Video URL</span>
+            <label for="ytInput">YouTube watch URL</label>
+            <input id="ytInput" type="text" placeholder="https://www.youtube.com/watch?v=...">
+            <div class="preview-hint">Auto-fill only happens when the tool is opened from a YouTube watch page.</div>
+          </div>
+
+          <div class="thumbnail-section">
+            <span class="section-label">Download</span>
+            <div class="action-row">
+              <button id="downloadHdBtn" type="button" disabled>HD</button>
+              <button id="downloadFhdBtn" type="button" disabled>FHD</button>
+            </div>
+          </div>
+
+          <div id="status" class="thumbnail-status" role="status" aria-live="polite"></div>
+        </div>
+
+        <div class="yt-right">
+          <span class="section-label">Preview</span>
+          <div class="preview-box" id="previewBox">
+            <div class="empty-state" id="emptyState">Open the tool from a YouTube watch page or paste a link to preview the thumbnail.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="youtube-thumbnail.js"></script>
+</body>
+</html>
