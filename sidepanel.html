@@ -25,10 +25,27 @@
     <h1>The file tools<br><span class="highlight">you need.</span></h1>
   </div>
 
+  <div class="search-container">
+    <input type="text" id="searchInput" class="search-input" placeholder="Search tools..." autocomplete="off">
+    <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="11" cy="11" r="8"></circle>
+      <path d="m21 21-4.35-4.35"></path>
+    </svg>
+    <button class="clear-search" id="clearSearch" type="button" aria-label="Clear search" style="display: none;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
   <div class="tools-section">
+    <div id="noResults" class="no-results" style="display: none;">
+      <p>No tools found. Try a different search.</p>
+    </div>
     <div class="tools-grid">
       <a href="tools/qr.html" class="tool-card folder-card" data-tool="qr">
-        <div class="folder-graphic"></div>
+        <div class="folder-graphic folder-blue"></div>
         <div class="folder-base">
           <div class="folder-tab">TOOL</div>
           <div class="folder-shape"></div>
@@ -78,6 +95,150 @@
           <div class="folder-tab">MATH</div>
           <div class="folder-shape"></div>
           <div class="tool-name">Base Converter</div>
+        </div>
+      </a>
+
+      <a href="tools/json-formatter.html" class="tool-card" data-tool="json-formatter">
+        <div class="folder-graphic folder-indigo"></div>
+        <div class="folder-base">
+          <div class="folder-tab">DEV</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">JSON Formatter</div>
+        </div>
+      </a>
+
+      <a href="tools/json-to-excel.html" class="tool-card" data-tool="json-to-excel">
+        <div class="folder-graphic folder-lime"></div>
+        <div class="folder-base">
+          <div class="folder-tab">DATA</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">JSON to Excel</div>
+        </div>
+      </a>
+
+      <a href="tools/compound-interest-calculator.html" class="tool-card" data-tool="compound-interest-calculator">
+        <div class="folder-graphic folder-green"></div>
+        <div class="folder-base">
+          <div class="folder-tab">FINANCE</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">Compound Interest</div>
+        </div>
+      </a>
+
+      <a href="tools/fd-calculator.html" class="tool-card" data-tool="fd-calculator">
+        <div class="folder-graphic folder-red"></div>
+        <div class="folder-base">
+          <div class="folder-tab">FINANCE</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">FD Calculator</div>
+        </div>
+      </a>
+
+      <a href="tools/rd-calculator.html" class="tool-card" data-tool="rd-calculator">
+        <div class="folder-graphic folder-teal"></div>
+        <div class="folder-base">
+          <div class="folder-tab">FINANCE</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">RD Calculator</div>
+        </div>
+      </a>
+
+      <a href="tools/ppf-calculator.html" class="tool-card" data-tool="ppf-calculator">
+        <div class="folder-graphic folder-rose"></div>
+        <div class="folder-base">
+          <div class="folder-tab">FINANCE</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">PPF Calculator</div>
+        </div>
+      </a>
+
+      <a href="tools/mutual-fund-calculator.html" class="tool-card" data-tool="mutual-fund-calculator">
+        <div class="folder-graphic folder-sky"></div>
+        <div class="folder-base">
+          <div class="folder-tab">FINANCE</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">Mutual Fund Returns</div>
+        </div>
+      </a>
+
+      <a href="tools/word-counter.html" class="tool-card" data-tool="word-counter">
+        <div class="folder-graphic folder-emerald"></div>
+        <div class="folder-base">
+          <div class="folder-tab">TEXT</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">Word Counter</div>
+        </div>
+      </a>
+
+      <a href="tools/character-counter.html" class="tool-card" data-tool="character-counter">
+        <div class="folder-graphic folder-blue"></div>
+        <div class="folder-base">
+          <div class="folder-tab">TEXT</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">Character Counter</div>
+        </div>
+      </a>
+
+      <a href="tools/sentence-counter.html" class="tool-card" data-tool="sentence-counter">
+        <div class="folder-graphic folder-indigo"></div>
+        <div class="folder-base">
+          <div class="folder-tab">TEXT</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">Sentence Counter</div>
+        </div>
+      </a>
+
+      <a href="tools/text-case-converter.html" class="tool-card" data-tool="text-case-converter">
+        <div class="folder-graphic folder-amber"></div>
+        <div class="folder-base">
+          <div class="folder-tab">TEXT</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">Text Case Converter</div>
+        </div>
+      </a>
+
+      <a href="tools/remove-duplicate-lines.html" class="tool-card" data-tool="remove-duplicate-lines">
+        <div class="folder-graphic folder-red"></div>
+        <div class="folder-base">
+          <div class="folder-tab">TEXT</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">Remove Duplicates</div>
+        </div>
+      </a>
+
+      <a href="tools/text-sorter.html" class="tool-card" data-tool="text-sorter">
+        <div class="folder-graphic folder-teal"></div>
+        <div class="folder-base">
+          <div class="folder-tab">TEXT</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">Text Sorter</div>
+        </div>
+      </a>
+
+      <a href="tools/text-cleaner.html" class="tool-card" data-tool="text-cleaner">
+        <div class="folder-graphic folder-rose"></div>
+        <div class="folder-base">
+          <div class="folder-tab">TEXT</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">Text Cleaner</div>
+        </div>
+      </a>
+
+      <a href="tools/image-resizer.html" class="tool-card" data-tool="image-resizer">
+        <div class="folder-graphic folder-violet"></div>
+        <div class="folder-base">
+          <div class="folder-tab">MEDIA</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">Image Resizer</div>
+        </div>
+      </a>
+
+      <a href="tools/lorem-ipsum-generator.html" class="tool-card" data-tool="lorem-ipsum-generator">
+        <div class="folder-graphic folder-sky"></div>
+        <div class="folder-base">
+          <div class="folder-tab">TEXT</div>
+          <div class="folder-shape"></div>
+          <div class="tool-name">Lorem Ipsum Generator</div>
         </div>
       </a>
     </div>

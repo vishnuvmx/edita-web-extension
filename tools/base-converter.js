@@ -11,6 +11,7 @@ const decimalOutput = document.getElementById('decimalOutput');
 const hexOutput = document.getElementById('hexOutput');
 const octalOutput = document.getElementById('octalOutput');
 const statusEl = document.getElementById('status');
+const dropdownWrappers = Array.from(document.querySelectorAll('.base-select-wrap'));
 
 const BASE_LABELS = {
   2: 'Binary',
@@ -107,6 +108,102 @@ function renderAllBases(value) {
   octalOutput.textContent = `${formatBase(value, 8)}₈`;
 }
 
+function closeAllDropdowns() {
+  dropdownWrappers.forEach((wrapper) => {
+    const trigger = wrapper.querySelector('.base-select-trigger');
+    wrapper.dataset.open = 'false';
+    if (trigger) {
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+function syncDropdownUI(wrapper) {
+  const select = wrapper.querySelector('select');
+  const valueEl = wrapper.querySelector('.base-select-value');
+  const options = wrapper.querySelectorAll('.base-select-option');
+  const selectedOption = options.length
+    ? Array.from(options).find((option) => option.dataset.value === select.value)
+    : null;
+
+  if (valueEl) {
+    valueEl.textContent = selectedOption ? selectedOption.textContent : BASE_LABELS[normalizeBase(select.value)];
+  }
+
+  options.forEach((option) => {
+    const isSelected = option.dataset.value === select.value;
+    option.dataset.selected = isSelected ? 'true' : 'false';
+    option.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+  });
+}
+
+function syncAllDropdownUIs() {
+  dropdownWrappers.forEach(syncDropdownUI);
+}
+
+function initCustomDropdowns() {
+  dropdownWrappers.forEach((wrapper) => {
+    const select = wrapper.querySelector('select');
+    const trigger = wrapper.querySelector('.base-select-trigger');
+    const options = wrapper.querySelectorAll('.base-select-option');
+
+    if (!select || !trigger || !options.length) {
+      return;
+    }
+
+    wrapper.dataset.open = 'false';
+    syncDropdownUI(wrapper);
+
+    trigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      const shouldOpen = wrapper.dataset.open !== 'true';
+      closeAllDropdowns();
+      if (shouldOpen) {
+        wrapper.dataset.open = 'true';
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    trigger.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        const shouldOpen = wrapper.dataset.open !== 'true';
+        closeAllDropdowns();
+        if (shouldOpen) {
+          wrapper.dataset.open = 'true';
+          trigger.setAttribute('aria-expanded', 'true');
+        }
+      }
+
+      if (event.key === 'Escape') {
+        closeAllDropdowns();
+      }
+    });
+
+    options.forEach((option) => {
+      option.addEventListener('click', () => {
+        const nextValue = option.dataset.value;
+        if (!nextValue || select.value === nextValue) {
+          closeAllDropdowns();
+          return;
+        }
+
+        select.value = nextValue;
+        syncDropdownUI(wrapper);
+        closeAllDropdowns();
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    const clickedInsideDropdown = dropdownWrappers.some((wrapper) => wrapper.contains(event.target));
+    if (!clickedInsideDropdown) {
+      closeAllDropdowns();
+    }
+  });
+}
+
 function convertValue() {
   try {
     const fromBase = normalizeBase(inputBase.value);
@@ -148,6 +245,7 @@ function swapBases() {
   const currentInput = inputBase.value;
   inputBase.value = outputBase.value;
   outputBase.value = currentInput;
+  syncAllDropdownUIs();
   convertValue();
 }
 
@@ -160,6 +258,7 @@ function resetConverter() {
   decimalOutput.textContent = '-';
   hexOutput.textContent = '-';
   octalOutput.textContent = '-';
+  syncAllDropdownUIs();
   setStatus('Enter a value and convert between bases.');
 }
 
@@ -169,8 +268,14 @@ copyBtn.addEventListener('click', copyResult);
 resetBtn.addEventListener('click', resetConverter);
 
 valueInput.addEventListener('input', convertValue);
-inputBase.addEventListener('change', convertValue);
-outputBase.addEventListener('change', convertValue);
+inputBase.addEventListener('change', () => {
+  syncAllDropdownUIs();
+  convertValue();
+});
+outputBase.addEventListener('change', () => {
+  syncAllDropdownUIs();
+  convertValue();
+});
 
 valueInput.addEventListener('keydown', (event) => {
   if (event.key === 'Enter') {
@@ -179,4 +284,5 @@ valueInput.addEventListener('keydown', (event) => {
   }
 });
 
+initCustomDropdowns();
 resetConverter();

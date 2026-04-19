@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Text Case Converter</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .text-tool-main {
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+
+    .text-tool-main h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .tool-section {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #e2ecf7;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      border-radius: 12px;
+      padding: 12px 13px;
+      font-size: 14px;
+      font-family: monospace;
+      border: 1px solid #e2ecf7;
+      resize: vertical;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .button-grid button {
+      margin-top: 0;
+      font-family: "Poppins";
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 14px;
+    }
+
+    .output-section {
+      margin-top: 16px;
+    }
+
+    .output-area {
+      background: #f8fbff;
+      border: 1px solid #dbe7f3;
+      border-radius: 12px;
+      padding: 12px;
+      min-height: 100px;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 13px;
+      color: #0f172a;
+    }
+
+    .cta-primary {
+      box-shadow: 0 12px 24px rgba(16, 185, 129, 0.28);
+    }
+
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card text-tool-main">
+      <h1>Text Case <span style="color: var(--brand);">Converter</span></h1>
+      <p>Convert text between different cases: uppercase, lowercase, title case, and more.</p>
+
+      <div class="tool-section">
+        <span class="section-label">Input Text</span>
+        <textarea id="inputText" placeholder="Paste or type your text here..."></textarea>
+
+        <div class="button-grid">
+          <button type="button" data-case="upper">UPPERCASE</button>
+          <button type="button" data-case="lower">lowercase</button>
+          <button type="button" data-case="title">Title Case</button>
+          <button type="button" data-case="sentence">Sentence case</button>
+          <button type="button" data-case="toggle">tOGGLE cASE</button>
+          <button type="button" data-case="capitalize">Capitalize</button>
+        </div>
+      </div>
+
+      <div class="tool-section output-section">
+        <span class="section-label">Output</span>
+        <div class="output-area" id="outputArea">Your converted text will appear here</div>
+        <button id="copyBtn" class="cta-primary" style="width: 100%; margin-top: 10px;" type="button">Copy Output</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="text-case-converter.js"></script>
+</body>
+</html>

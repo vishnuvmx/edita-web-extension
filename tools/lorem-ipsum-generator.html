@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Lorem Ipsum Generator</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
+
+    .text-tool-main {
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+
+    .text-tool-main h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .tool-section {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #e2ecf7;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .field-group {
+      margin-bottom: 12px;
+    }
+
+    label {
+      font-size: 12.5px;
+      margin-bottom: 6px;
+      color: #1e293b;
+      display: block;
+    }
+
+    input[type="number"] {
+      width: 100%;
+    }
+
+    .base-select-wrap {
+      position: relative;
+      border-radius: 16px;
+    }
+
+    .base-select-native {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .base-select-trigger {
+      width: 100%;
+      border: 1px solid #c7d6e6;
+      border-radius: 14px;
+      background: linear-gradient(180deg, #ffffff 0%, #f5f9ff 100%);
+      color: #0f172a;
+      font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      padding: 12px 13px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 0;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.74), 0 4px 10px rgba(15, 23, 42, 0.04);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    }
+
+    .base-select-trigger:hover {
+      border-color: #adc3da;
+      background: linear-gradient(180deg, #ffffff 0%, #f1f7ff 100%);
+    }
+
+    .base-select-wrap[data-open='true'] .base-select-trigger,
+    .base-select-trigger:focus-visible {
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16), 0 8px 16px rgba(16, 185, 129, 0.14);
+      background: linear-gradient(180deg, #ffffff 0%, #f4fbf9 100%);
+      transform: translateY(-1px);
+      outline: none;
+    }
+
+    .base-select-value {
+      text-align: left;
+      font-weight: 300;
+    }
+
+    .base-select-chevron {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      border: 1px solid #d5dfeb;
+      background: linear-gradient(180deg, #ffffff 0%, #eef4fc 100%);
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .base-select-chevron::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 42%;
+      width: 6px;
+      height: 6px;
+      border-right: 2px solid #64748b;
+      border-bottom: 2px solid #64748b;
+      transform: translate(-50%, -50%) rotate(45deg);
+      transition: transform 0.2s ease;
+    }
+
+    .base-select-wrap[data-open='true'] .base-select-chevron::before {
+      transform: translate(-50%, -20%) rotate(-135deg);
+    }
+
+    .base-select-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border: 1px solid #dbe7f3;
+      border-radius: 16px;
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
+      padding: 8px;
+      display: none;
+      z-index: 20;
+    }
+
+    .base-select-wrap[data-open='true'] .base-select-menu {
+      display: grid;
+      gap: 4px;
+    }
+
+    .base-select-option {
+      border: none;
+      margin: 0;
+      width: 100%;
+      text-align: left;
+      border-radius: 12px;
+      background: transparent;
+      color: #334155;
+      font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      font-size: 15px;
+      font-weight: 300;
+      padding: 10px 12px;
+      box-shadow: none;
+      transition: background 0.18s ease, color 0.18s ease;
+    }
+
+    .base-select-option:hover,
+    .base-select-option:focus-visible {
+      background: #eff6f3;
+      color: #0f766e;
+      outline: none;
+    }
+
+    .base-select-option[data-selected='true'] {
+      background: #d8ebe4;
+      color: #0f766e;
+      font-weight: 300;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 200px;
+      border-radius: 12px;
+      padding: 12px 13px;
+      font-size: 14px;
+      font-family: monospace;
+      border: 1px solid #e2ecf7;
+      resize: vertical;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .action-row button {
+      margin-top: 0;
+      font-family: "Poppins";
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 14px;
+    }
+
+    .action-row .cta-primary {
+      box-shadow: 0 12px 24px rgba(16, 185, 129, 0.28);
+    }
+
+    .action-row .cta-secondary {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .action-row .cta-secondary:hover {
+      border-color: #b9c8da;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card text-tool-main">
+      <h1>Lorem Ipsum <span style="color: var(--brand);">Generator</span></h1>
+      <p>Generate classic Lorem Ipsum placeholder text for design and layout testing.</p>
+
+      <div class="tool-section">
+        <span class="section-label">Settings</span>
+        
+        <div class="field-group">
+          <label for="loremType">Type</label>
+          <div class="base-select-wrap">
+            <select id="loremType" class="base-select-native" aria-hidden="true" tabindex="-1">
+              <option value="words" selected>Words</option>
+              <option value="sentences">Sentences</option>
+              <option value="paragraphs">Paragraphs</option>
+            </select>
+            <button class="base-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="loremTypeMenu">
+              <span class="base-select-value">Words</span>
+              <span class="base-select-chevron" aria-hidden="true"></span>
+            </button>
+            <div id="loremTypeMenu" class="base-select-menu" role="listbox" aria-label="Lorem type">
+              <button type="button" class="base-select-option" role="option" data-value="words">Words</button>
+              <button type="button" class="base-select-option" role="option" data-value="sentences">Sentences</button>
+              <button type="button" class="base-select-option" role="option" data-value="paragraphs">Paragraphs</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label for="loremCount">Count</label>
+          <input id="loremCount" type="number" min="1" value="5">
+        </div>
+
+        <div class="action-row">
+          <button id="generateBtn" class="cta-primary" type="button">Generate</button>
+          <button id="clearBtn" class="cta-secondary" type="button">Clear</button>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <span class="section-label">Output</span>
+        <textarea id="loremOutput" placeholder="Lorem Ipsum text will appear here..." readonly></textarea>
+        <button id="copyBtn" class="cta-primary" style="width: 100%; margin-top: 10px;" type="button">Copy Output</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="lorem-ipsum-generator.js"></script>
+</body>
+</html>

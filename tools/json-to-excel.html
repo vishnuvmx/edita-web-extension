@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>JSON to Excel</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .jsonexcel-main {
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+
+    .jsonexcel-main h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .converter {
+      color: var(--brand);
+    }
+
+    .jsonexcel-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .jsonexcel-section {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #e2ecf7;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+    }
+
+    .jsonexcel-section:first-child {
+      margin-top: 2px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    label {
+      font-size: 12.5px;
+      margin-bottom: 7px;
+      color: #1e293b;
+    }
+
+    textarea {
+      width: 100%;
+      border: 1px solid #d2deeb;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      min-height: 170px;
+      resize: vertical;
+      line-height: 1.5;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      font-family: Consolas, "Courier New", monospace;
+      color: #0f172a;
+    }
+
+    textarea:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .action-row button {
+      margin-top: 0;
+      font-family: "Poppins";
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 14px;
+    }
+
+    .action-row .cta-primary {
+      box-shadow: 0 12px 24px rgba(16, 185, 129, 0.28);
+    }
+
+    .action-row .cta-secondary,
+    .action-row .cta-ghost {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .action-row .cta-secondary:hover,
+    .action-row .cta-ghost:hover {
+      border-color: #b9c8da;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+    }
+
+    @media (min-width: 620px) {
+      .action-row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card jsonexcel-main">
+      <h1>JSON to <span class="converter">Excel</span></h1>
+      <p>Convert JSON array/object data into table rows and download an Excel-compatible file instantly.</p>
+
+      <div class="jsonexcel-layout">
+        <div class="jsonexcel-section">
+          <span class="section-label">Input</span>
+          <label for="jsonInput">JSON data</label>
+          <textarea id="jsonInput" placeholder='[{"name":"Asha","age":29,"city":"Kochi"},{"name":"Nikhil","age":31,"city":"Calicut"}]'></textarea>
+
+          <div class="action-row">
+            <button id="convertBtn" class="cta-primary" type="button">Convert to Table</button>
+            <button id="downloadBtn" class="cta-secondary" type="button">Download Excel (.xls)</button>
+            <button id="copyCsvBtn" class="cta-secondary" type="button">Copy CSV</button>
+            <button id="clearBtn" class="cta-ghost" type="button">Clear</button>
+          </div>
+        </div>
+
+        <div class="jsonexcel-section">
+          <span class="section-label">Output</span>
+          <label for="csvOutput">CSV preview</label>
+          <textarea id="csvOutput" readonly placeholder="Converted CSV will appear here..."></textarea>
+          <div id="status" class="status" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="json-to-excel.js"></script>
+</body>
+</html>

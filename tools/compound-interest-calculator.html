@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Compound Interest Calculator</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .calc-main {
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+
+    .calc-main h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .calculator {
+      color: var(--brand);
+    }
+
+    .calc-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .calc-section {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #e2ecf7;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+    }
+
+    .calc-section:first-child {
+      margin-top: 2px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .field-grid label {
+      font-size: 12.5px;
+      margin-bottom: 7px;
+      color: #1e293b;
+    }
+
+    .field-grid input {
+      border-radius: 12px;
+      padding: 12px 13px;
+      font-size: 14.5px;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .action-row button {
+      margin-top: 0;
+      font-family: "Poppins";
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 14px;
+    }
+
+    .action-row .cta-primary {
+      box-shadow: 0 12px 24px rgba(16, 185, 129, 0.28);
+    }
+
+    .action-row .cta-secondary {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .action-row .cta-secondary:hover {
+      border-color: #b9c8da;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .result-item {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #dbe7f3;
+      border-radius: 12px;
+      padding: 12px;
+      min-height: 88px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .result-title {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #64748b;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .result-value {
+      font-size: clamp(19px, 4.1vw, 24px);
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #d9e4f1;
+      background: #f8fbff;
+      font-size: 13px;
+    }
+
+    @media (min-width: 560px) {
+      .field-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .field-grid .field-full {
+        grid-column: 1 / -1;
+      }
+
+      .action-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card calc-main">
+      <h1>Compound Interest <span class="calculator">Calculator</span></h1>
+      <p>Calculate the future value of your investment with compound interest over time.</p>
+
+      <div class="calc-layout">
+        <div class="calc-section">
+          <span class="section-label">Inputs</span>
+          <div class="field-grid">
+            <div>
+              <label for="principal">Principal Amount (₹)</label>
+              <input id="principal" type="number" min="1" step="1000" value="100000">
+            </div>
+            <div>
+              <label for="rate">Annual Interest Rate (%)</label>
+              <input id="rate" type="number" min="0" step="0.1" value="8">
+            </div>
+            <div>
+              <label for="time">Time Period (years)</label>
+              <input id="time" type="number" min="1" step="1" value="10">
+            </div>
+            <div>
+              <label for="frequency">Compounded</label>
+              <select id="frequency">
+                <option value="1">Annually</option>
+                <option value="2">Semi-Annually</option>
+                <option value="4">Quarterly</option>
+                <option value="12" selected>Monthly</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button id="calculateBtn" class="cta-primary" type="button">Calculate</button>
+            <button id="resetBtn" class="cta-secondary" type="button">Reset Values</button>
+          </div>
+        </div>
+
+        <div class="calc-section">
+          <span class="section-label">Results</span>
+          <div class="result-grid">
+            <div class="result-item">
+              <span class="result-title">Principal</span>
+              <div class="result-value" id="principal-result">-</div>
+            </div>
+            <div class="result-item">
+              <span class="result-title">Interest Earned</span>
+              <div class="result-value" id="interest-result">-</div>
+            </div>
+            <div class="result-item">
+              <span class="result-title">Maturity Value</span>
+              <div class="result-value" id="maturity-result">-</div>
+            </div>
+          </div>
+          <div id="status" class="status" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="compound-interest-calculator.js"></script>
+</body>
+</html>

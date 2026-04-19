@@ -90,13 +90,42 @@
 
     .action-row {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 10px;
-      margin-top: 10px;
+      margin-top: 12px;
     }
 
     .action-row button {
       margin-top: 0;
+      font-family: "Poppins";
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 14px;
+    }
+
+    .action-row .cta-primary {
+      box-shadow: 0 12px 24px rgba(16, 185, 129, 0.28);
+    }
+
+    .action-row .cta-secondary,
+    .action-row .cta-ghost {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .action-row .cta-secondary:hover,
+    .action-row .cta-ghost:hover {
+      border-color: #b9c8da;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+    }
+
+    @media (min-width: 620px) {
+      .action-row {
+        grid-template-columns: 1fr 1fr;
+        margin-top: 10px;
+      }
     }
 
     textarea {
@@ -122,7 +151,7 @@
 <body>
   <main class="page">
     <div class="topbar">
-      <a href="../sidepanel.html" class="back-link">&larr; Back to tools</a>
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
     </div>
 
     <section class="card uuid-main">
@@ -147,8 +176,8 @@
           </div>
 
           <div class="action-row">
-            <button id="generateBtn" type="button">Generate</button>
-            <button id="copyBtn" type="button">Copy All</button>
+            <button id="generateBtn" class="cta-primary" type="button">Generate UUIDs</button>
+            <button id="copyBtn" class="cta-secondary" type="button">Copy All</button>
           </div>
         </div>
 

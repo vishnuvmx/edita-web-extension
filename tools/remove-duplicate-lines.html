@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Remove Duplicate Lines</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .text-tool-main {
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+
+    .text-tool-main h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .tool-section {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #e2ecf7;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 200px;
+      border-radius: 12px;
+      padding: 12px 13px;
+      font-size: 14px;
+      font-family: monospace;
+      border: 1px solid #e2ecf7;
+      resize: vertical;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .action-row button {
+      margin-top: 0;
+      font-family: "Poppins";
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 14px;
+    }
+
+    .action-row .cta-primary {
+      box-shadow: 0 12px 24px rgba(16, 185, 129, 0.28);
+    }
+
+    .action-row .cta-secondary {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .action-row .cta-secondary:hover {
+      border-color: #b9c8da;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .stat-item {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #dbe7f3;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card text-tool-main">
+      <h1>Remove Duplicate <span style="color: var(--brand);">Lines</span></h1>
+      <p>Remove duplicate lines from your text and keep unique entries only.</p>
+
+      <div class="tool-section">
+        <span class="section-label">Input Text</span>
+        <textarea id="inputText" placeholder="Paste text with duplicate lines..."></textarea>
+
+        <div class="action-row">
+          <button id="removeBtn" class="cta-primary" type="button">Remove Duplicates</button>
+          <button id="clearBtn" class="cta-secondary" type="button">Clear Text</button>
+        </div>
+
+        <div class="stats">
+          <div class="stat-item">
+            <div class="stat-label">Original Lines</div>
+            <div class="stat-value" id="originalCount">0</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Unique Lines</div>
+            <div class="stat-value" id="uniqueCount">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <span class="section-label">Output</span>
+        <textarea id="outputText" placeholder="Unique lines will appear here..." readonly></textarea>
+        <button id="copyBtn" class="cta-primary" style="width: 100%; margin-top: 10px;" type="button">Copy Output</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="remove-duplicate-lines.js"></script>
+</body>
+</html>

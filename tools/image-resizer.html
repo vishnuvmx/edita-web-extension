@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Image Resizer</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .resizer-main {
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+
+    .resizer-main h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .resizer {
+      color: var(--brand);
+    }
+
+    .resizer-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .resizer-section {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #e2ecf7;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .field-grid label {
+      font-size: 12.5px;
+      margin-bottom: 7px;
+      color: #1e293b;
+    }
+
+    .field-grid input,
+    .field-grid select {
+      border-radius: 12px;
+      padding: 12px 13px;
+      font-size: 14.5px;
+    }
+
+    .file-input-native {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .file-picker-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .file-picker-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      border-radius: 12px;
+      border: 1px solid #d0dbe8;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      font-family: "Poppins", "Inter", "Segoe UI", sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      padding: 6px;
+      cursor: pointer;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      min-height: 44px;
+    }
+
+    .file-picker-btn:hover {
+      transform: translateY(-1px);
+      border-color: #b9c8da;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+    }
+
+    .file-picker-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.1);
+    }
+
+    .file-picker-btn:focus-visible {
+      outline: none;
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.16), 0 10px 20px rgba(16, 185, 129, 0.18);
+    }
+
+    .file-picker-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #34d399 0%, #059669 70%);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 700;
+      flex: 0 0 auto;
+      box-shadow: 0 8px 16px rgba(16, 185, 129, 0.26);
+    }
+
+    .file-picker-text {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding-right: 8px;
+    }
+
+    .file-name {
+      font-size: 12px;
+      color: #334155;
+      font-weight: 600;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      border: 1px solid #d0dbe8;
+      border-radius: 10px;
+      padding: 10px 12px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+      word-break: break-word;
+      flex: 1 1 220px;
+    }
+
+    .hint {
+      margin-top: 6px;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+      font-size: 13px;
+      color: #334155;
+      font-weight: 600;
+    }
+
+    .toggle-row input {
+      margin: 0;
+      accent-color: var(--brand);
+    }
+
+    .range-wrap {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .range-wrap input[type="range"] {
+      width: 100%;
+      margin: 0;
+    }
+
+    .range-value {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f172a;
+      background: #eef6ff;
+      border: 1px solid #d8e5f4;
+      border-radius: 999px;
+      padding: 4px 10px;
+      min-width: 56px;
+      text-align: center;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .action-row button {
+      margin-top: 0;
+      font-family: "Poppins";
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 14px;
+    }
+
+    .action-row .cta-primary {
+      box-shadow: 0 12px 24px rgba(16, 185, 129, 0.28);
+    }
+
+    .action-row .cta-secondary,
+    .action-row .cta-ghost {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .action-row .cta-secondary:hover,
+    .action-row .cta-ghost:hover {
+      border-color: #b9c8da;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .preview-card {
+      border: 1px solid #d9e4f1;
+      border-radius: 12px;
+      padding: 10px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    }
+
+    .preview-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      letter-spacing: 0.06em;
+    }
+
+    .preview-frame {
+      border: 1px dashed #cddaea;
+      border-radius: 10px;
+      min-height: 180px;
+      background: linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .preview-frame img {
+      width: 100%;
+      height: 100%;
+      max-height: 280px;
+      object-fit: contain;
+      display: none;
+    }
+
+    .empty-state {
+      font-size: 13px;
+      color: #64748b;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .meta {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #334155;
+      line-height: 1.5;
+      min-height: 36px;
+    }
+
+    @media (min-width: 620px) {
+      .field-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .field-grid .field-full {
+        grid-column: 1 / -1;
+      }
+
+      .action-row {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .preview-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card resizer-main">
+      <h1>Image <span class="resizer">Resizer</span></h1>
+      <p>Resize images to custom dimensions, choose output format and quality, and target a specific output size.</p>
+
+      <div class="resizer-layout">
+        <div class="resizer-section">
+          <span class="section-label">Input</span>
+          <div class="field-grid">
+            <div class="field-full">
+              <label for="imageInput">Select image</label>
+              <input id="imageInput" class="file-input-native" type="file" accept="image/*">
+              <div class="file-picker-row">
+                <label for="imageInput" class="file-picker-btn">
+                  <span class="file-picker-icon">+</span>
+                  <span class="file-picker-text">Choose Image</span>
+                </label>
+                <span id="fileName" class="file-name">No file selected</span>
+              </div>
+              <div class="hint">Supported: JPG, PNG, WEBP and other browser-readable image formats.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="resizer-section">
+          <span class="section-label">Original Preview</span>
+          <div class="preview-grid">
+            <div class="preview-card">
+              <div class="preview-title">Original</div>
+              <div class="preview-frame">
+                <img id="originalPreview" alt="Original preview">
+                <div id="originalEmpty" class="empty-state">Upload an image to preview it.</div>
+              </div>
+              <div id="originalMeta" class="meta">No file selected.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="resizer-section">
+          <span class="section-label">Resize Settings</span>
+          <div class="field-grid">
+            <div>
+              <label for="widthInput">Width (px)</label>
+              <input id="widthInput" type="number" min="1" value="1200">
+            </div>
+            <div>
+              <label for="heightInput">Height (px)</label>
+              <input id="heightInput" type="number" min="1" value="800">
+            </div>
+            <div class="field-full toggle-row">
+              <input id="lockRatio" type="checkbox" checked>
+              <label for="lockRatio" style="margin: 0;">Lock aspect ratio</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="resizer-section">
+          <span class="section-label">Resized Preview</span>
+          <div class="preview-grid">
+            <div class="preview-card">
+              <div class="preview-title">Resized</div>
+              <div class="preview-frame">
+                <img id="resizedPreview" alt="Resized preview">
+                <div id="resizedEmpty" class="empty-state">Your resized image will appear here.</div>
+              </div>
+              <div id="resizedMeta" class="meta">No output generated.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="resizer-section">
+          <span class="section-label">Output Settings</span>
+          <div class="field-grid">
+            <div>
+              <label for="formatSelect">Output format</label>
+              <select id="formatSelect">
+                <option value="image/jpeg">JPEG (.jpg)</option>
+                <option value="image/png">PNG (.png)</option>
+                <option value="image/webp">WEBP (.webp)</option>
+              </select>
+            </div>
+            <div>
+              <label for="targetSizeKb">Target size (KB, optional)</label>
+              <input id="targetSizeKb" type="number" min="1" placeholder="e.g. 200">
+              <div id="targetHint" class="hint">For JPEG/WEBP, quality is adjusted automatically to approach this size.</div>
+            </div>
+            <div class="field-full">
+              <label for="qualityRange">Quality (JPEG/WEBP)</label>
+              <div class="range-wrap">
+                <input id="qualityRange" type="range" min="10" max="100" step="1" value="90">
+                <span class="range-value" id="qualityValue">90%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button id="resizeBtn" class="cta-primary" type="button">Resize Image</button>
+            <button id="downloadBtn" class="cta-secondary" type="button" disabled>Download</button>
+            <button id="resetBtn" class="cta-ghost" type="button">Reset</button>
+          </div>
+          <div id="status" class="status" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="image-resizer.js"></script>
+</body>
+</html>
