@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Time Zone Matcher</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .tz-main {
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+
+    .tz-main h1 {
+      font-size: 40px;
+      line-height: 1.12;
+      margin-bottom: 10px;
+    }
+
+    .accent {
+      color: var(--brand);
+    }
+
+    .tool-section {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #e2ecf7;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+      margin-bottom: 14px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .local-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .local-pill {
+      border: 1px solid #d9e7f5;
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: #ffffff;
+      font-size: 13px;
+      color: #334155;
+    }
+
+    .timezone-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .timezone-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid #dbe7f3;
+      border-radius: 10px;
+      padding: 8px 9px;
+      font-size: 13px;
+      color: #334155;
+      background: #ffffff;
+    }
+
+    .timezone-item input {
+      margin: 0;
+      accent-color: var(--brand);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid #dbe7f3;
+      border-radius: 12px;
+      background: #ffffff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 420px;
+      font-size: 13px;
+    }
+
+    thead th {
+      text-align: left;
+      background: #f1f8ff;
+      color: #334155;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 10px 11px;
+      border-bottom: 1px solid #dbe7f3;
+    }
+
+    tbody td {
+      padding: 10px 11px;
+      border-bottom: 1px solid #edf2f9;
+      color: #1e293b;
+      vertical-align: top;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      border: 1px solid #d7e4f1;
+      padding: 2px 8px;
+      font-size: 11px;
+      color: #475569;
+      background: #f8fbff;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card tz-main">
+      <h1>Time Zone <span class="accent">Matcher</span></h1>
+      <p>Compare countries and cities against your local time using GMT offsets and live clock values.</p>
+
+      <div class="tool-section">
+        <span class="section-label">Local Time</span>
+        <div class="local-grid">
+          <div class="local-pill" id="localZone">Time Zone: -</div>
+          <div class="local-pill" id="localTime">Current Time: -</div>
+          <div class="local-pill" id="localOffset">GMT Offset: -</div>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <span class="section-label">Choose Countries / Cities</span>
+        <div class="timezone-list" id="timezoneList"></div>
+      </div>
+
+      <div class="tool-section">
+        <span class="section-label">Matched Times</span>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Location</th>
+                <th>Time</th>
+                <th>GMT</th>
+                <th>Difference vs Local</th>
+              </tr>
+            </thead>
+            <tbody id="matchRows"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script src="tool-base-footer.js"></script>
+  <script src="time-zone-matcher.js"></script>
+</body>
+</html>

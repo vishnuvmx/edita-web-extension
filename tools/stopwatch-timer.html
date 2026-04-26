@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Stopwatch Timer</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .timer-main {
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+
+    .timer-main h1 {
+      font-size: 40px;
+      line-height: 1.12;
+      margin-bottom: 10px;
+    }
+
+    .accent {
+      color: var(--brand);
+    }
+
+    .tool-section {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #e2ecf7;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+      margin-bottom: 14px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .timer-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 8px 0 14px;
+    }
+
+    .timer-ring {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      display: grid;
+      place-items: center;
+    }
+
+    .timer-ring svg {
+      width: 220px;
+      height: 220px;
+      transform: rotate(-90deg);
+    }
+
+    .ring-track {
+      fill: none;
+      stroke: #e2e8f0;
+      stroke-width: 12;
+    }
+
+    .ring-progress {
+      fill: none;
+      stroke: #10b981;
+      stroke-width: 12;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.28s linear;
+    }
+
+    .timer-display {
+      position: absolute;
+      text-align: center;
+    }
+
+    .time-value {
+      font-family: "Bricolage Grotesque", "Segoe UI", sans-serif;
+      font-size: 40px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: #0f172a;
+      line-height: 1;
+    }
+
+    .time-label {
+      margin-top: 8px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .preset-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .preset-btn {
+      width: auto;
+      margin: 0;
+      padding: 8px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      background: #ffffff;
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: none;
+    }
+
+    .preset-btn:hover {
+      box-shadow: 0 8px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .action-row button {
+      margin-top: 0;
+      font-family: "Poppins";
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 14px;
+    }
+
+    .action-row .cta-secondary {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card timer-main">
+      <h1>Stopwatch <span class="accent">Timer</span></h1>
+      <p>Set minutes and seconds, then run a visual countdown with a circular progress ring.</p>
+
+      <div class="tool-section">
+        <span class="section-label">Set Duration</span>
+        <div class="field-grid">
+          <div>
+            <label for="minutesInput">Minutes</label>
+            <input id="minutesInput" type="number" min="0" max="180" value="1">
+          </div>
+          <div>
+            <label for="secondsInput">Seconds</label>
+            <input id="secondsInput" type="number" min="0" max="59" value="0">
+          </div>
+        </div>
+
+        <div class="preset-row">
+          <button type="button" class="preset-btn" data-seconds="30">30s</button>
+          <button type="button" class="preset-btn" data-seconds="60">1m</button>
+          <button type="button" class="preset-btn" data-seconds="300">5m</button>
+          <button type="button" class="preset-btn" data-seconds="600">10m</button>
+          <button type="button" class="preset-btn" data-seconds="1200">20m</button>
+          <button type="button" class="preset-btn" data-seconds="3600">60m</button>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <span class="section-label">Countdown</span>
+        <div class="timer-wrap">
+          <div class="timer-ring">
+            <svg viewBox="0 0 220 220" aria-hidden="true">
+              <circle class="ring-track" cx="110" cy="110" r="88"></circle>
+              <circle id="ringProgress" class="ring-progress" cx="110" cy="110" r="88"></circle>
+            </svg>
+            <div class="timer-display">
+              <div class="time-value" id="timeValue">01:00</div>
+              <div class="time-label" id="timeLabel">Ready</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button id="startPauseBtn" type="button">Start</button>
+          <button id="resetBtn" class="cta-secondary" type="button">Reset</button>
+        </div>
+      </div>
+
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script src="tool-base-footer.js"></script>
+  <script src="stopwatch-timer.js"></script>
+</body>
+</html>

@@ -32,6 +32,33 @@ function downloadFile(url, filename, sendResponse) {
   });
 }
 
+function showToastOnActiveTab(message, sendResponse) {
+  const toastMessage = typeof message?.message === 'string' && message.message.trim() ? message.message : 'Time is up.';
+  const toastTone = message?.tone === 'error' ? 'error' : 'success';
+
+  chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+    const activeTab = Array.isArray(tabs) ? tabs.find((tab) => typeof tab.id === 'number') : null;
+
+    if (!activeTab || typeof activeTab.id !== 'number') {
+      sendResponse({ success: false, error: 'No active tab found' });
+      return;
+    }
+
+    chrome.tabs.sendMessage(activeTab.id, {
+      action: 'showToast',
+      message: toastMessage,
+      tone: toastTone
+    }, () => {
+      if (chrome.runtime.lastError) {
+        sendResponse({ success: false, error: chrome.runtime.lastError.message });
+        return;
+      }
+
+      sendResponse({ success: true });
+    });
+  });
+}
+
 function registerSidePanelMessageHandler() {
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (!message || !message.action) {
@@ -54,6 +81,11 @@ function registerSidePanelMessageHandler() {
 
     if (message.action === 'downloadFile') {
       downloadFile(message.url, message.filename, sendResponse);
+      return true;
+    }
+
+    if (message.action === 'showTimerToast') {
+      showToastOnActiveTab(message, sendResponse);
       return true;
     }
 

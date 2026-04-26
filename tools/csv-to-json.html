@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>CSV to JSON</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .tool-main { font-size: 15.5px; line-height: 1.6; }
+    .tool-main h1 { font-size: 40px; line-height: 1.12; margin-bottom: 8px; }
+    .accent { color: var(--brand); }
+    .layout { display: flex; flex-direction: column; gap: 16px; }
+    .panel { background: linear-gradient(180deg, #fff 0%, #f8fbff 100%); border: 1px solid #e2ecf7; border-radius: 14px; padding: 14px; box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04); }
+    .section-label { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; color: #475569; text-transform: uppercase; display: block; margin-bottom: 10px; }
+    textarea { width: 100%; min-height: 170px; border: 1px solid #d2deeb; border-radius: 12px; padding: 12px; font-size: 14px; line-height: 1.5; font-family: Consolas, 'Courier New', monospace; resize: vertical; background: linear-gradient(180deg, #fff 0%, #f8fbff 100%); }
+    .control-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .control-grid button { margin-top: 0; font-family: 'Poppins'; font-weight: 600; font-size: 14px; padding: 12px 14px; }
+    .control-grid .cta-secondary, .control-grid .cta-ghost { background: linear-gradient(180deg, #fff 0%, #f4f7fb 100%); color: #0f172a; border: 1px solid #d0dbe8; box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08); }
+    .control-grid .cta-secondary:hover, .control-grid .cta-ghost:hover { border-color: #b9c8da; box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12); }
+    .inline-row { display: grid; gap: 10px; align-items: end; grid-template-columns: 1fr; margin-bottom: 12px; }
+    .status { min-height: 20px; margin-top: 10px; font-size: 13px; color: #475569; }
+    @media (min-width: 620px) { .control-grid { grid-template-columns: 1fr 1fr; } .inline-row { grid-template-columns: 180px 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar"><a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a></div>
+    <section class="card tool-main">
+      <h1>CSV to <span class="accent">JSON</span></h1>
+      <p>Turn spreadsheet exports into clean JSON objects with header-aware parsing and downloadable output.</p>
+      <div class="layout">
+        <div class="panel">
+          <span class="section-label">Input</span>
+          <div class="inline-row">
+            <div>
+              <label for="delimiterSelect">Delimiter</label>
+              <select id="delimiterSelect">
+                <option value="comma">Comma</option>
+                <option value="tab">Tab</option>
+                <option value="semicolon">Semicolon</option>
+              </select>
+            </div>
+            <div>
+              <label for="csvInput">CSV data</label>
+              <textarea id="csvInput" placeholder="name,age,city&#10;Asha,29,Kochi&#10;Nikhil,31,Calicut"></textarea>
+            </div>
+          </div>
+          <div class="control-grid">
+            <button id="convertBtn" class="cta-primary" type="button">Convert to JSON</button>
+            <button id="copyBtn" class="cta-secondary" type="button">Copy JSON</button>
+            <button id="downloadBtn" class="cta-secondary" type="button">Download JSON</button>
+            <button id="clearBtn" class="cta-ghost" type="button">Clear</button>
+          </div>
+        </div>
+        <div class="panel">
+          <span class="section-label">Output</span>
+          <label for="jsonOutput">JSON result</label>
+          <textarea id="jsonOutput" readonly placeholder="JSON output appears here..."></textarea>
+          <div id="status" class="status" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="tool-base-footer.js"></script>
+  <script src="csv-to-json.js"></script>
+</body>
+</html>

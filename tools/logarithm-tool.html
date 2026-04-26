@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Logarithm</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap');
+
+    :root {
+      --tool-accent: #7c3aed;
+      --tool-accent-dark: #5b21b6;
+      --tool-surface: #faf7ff;
+      --tool-border: #e3d8fb;
+      --tool-soft: #ebe2ff;
+    }
+
+    .logarithm-main h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .logarithm-main h1 {
+      margin-bottom: 10px;
+    }
+
+    .log-layout {
+      display: grid;
+      gap: 14px;
+    }
+
+    .tool-section,
+    .result-section {
+      border: 1px solid var(--tool-border);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, var(--tool-surface) 100%);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+      padding: 14px;
+    }
+
+    .section-label {
+      display: block;
+      margin-bottom: 12px;
+      color: #475569;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .field-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field-grid label {
+      color: #1e293b;
+      font-size: 12.5px;
+      margin-bottom: 7px;
+      letter-spacing: normal;
+    }
+
+    .field-grid input,
+    .field-grid select {
+      border-radius: 12px;
+      border-color: #daccf5;
+      background: #ffffff;
+      font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      font-size: 15px;
+      padding: 12px 13px;
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .mode-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .mode-btn {
+      padding: 7px 11px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f172a;
+      background: #ffffff;
+      border-color: #ded3fb;
+    }
+
+    .mode-btn[data-active='true'] {
+      color: #ffffff;
+      border-color: rgba(91, 33, 182, 0.28);
+      background: linear-gradient(135deg, var(--tool-accent) 0%, var(--tool-accent-dark) 100%);
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .action-row button,
+    .mode-btn {
+      margin-top: 0;
+      width: 100%;
+      font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .action-row .cta-primary {
+      box-shadow: 0 12px 24px rgba(16, 185, 129, 0.28);
+      background: linear-gradient(135deg, var(--tool-accent) 0%, var(--tool-accent-dark) 100%);
+    }
+
+    .action-row .cta-secondary,
+    .action-row .cta-ghost,
+    .mode-btn {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .action-row .cta-secondary:hover,
+    .action-row .cta-ghost:hover,
+    .mode-btn:hover {
+      border-color: #b9c8da;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .result-box {
+      border-radius: 16px;
+      border: 1px solid rgba(124, 58, 237, 0.16);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(245, 240, 255, 0.95));
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .result-label {
+      color: #64748b;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .result-value {
+      color: #0f172a;
+      font-size: clamp(24px, 5vw, 34px);
+      font-weight: 800;
+      line-height: 1.1;
+      word-break: break-word;
+    }
+
+    .result-meta,
+    .result-note {
+      color: #64748b;
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    .status {
+      min-height: 20px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      word-break: break-word;
+    }
+
+    .status[data-tone='success'] {
+      color: var(--success);
+    }
+
+    .status[data-tone='error'] {
+      color: var(--danger);
+    }
+
+    .mode-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 520px) {
+      .split-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .action-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card logarithm-main">
+      <h1>Logarithm</h1>
+      <p>Work with natural logs, common logs, or any custom base with a clean change-of-base calculator.</p>
+
+      <div class="log-layout">
+        <div class="tool-section">
+          <span class="section-label">Log Value</span>
+          <div class="field-grid">
+            <div class="split-grid">
+              <div>
+                <label for="valueInput">Value</label>
+                <input id="valueInput" type="number" min="0" step="any" value="100">
+              </div>
+
+              <div>
+                <label for="baseInput">Base</label>
+                <input id="baseInput" type="number" min="0" step="any" value="10">
+              </div>
+            </div>
+
+            <div>
+              <label for="modeSelect">Mode</label>
+              <select id="modeSelect">
+                <option value="custom" selected>Custom base</option>
+                <option value="natural">Natural logarithm</option>
+                <option value="common">Common logarithm</option>
+              </select>
+            </div>
+
+            <div class="mode-buttons" aria-label="Quick base options">
+              <button class="mode-btn" type="button" data-base="10">Base 10</button>
+              <button class="mode-btn" type="button" data-base="2">Base 2</button>
+              <button class="mode-btn" type="button" data-base="e">Base e</button>
+              <button class="mode-btn" type="button" data-base="5">Base 5</button>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button id="computeBtn" class="cta-primary" type="button">Calculate Logarithm</button>
+            <button id="resetBtn" class="cta-secondary" type="button">Reset Values</button>
+          </div>
+
+          <div id="status" class="status" role="status" aria-live="polite">Enter a value and base to calculate a logarithm.</div>
+        </div>
+
+        <div class="result-section">
+          <span class="section-label">Result</span>
+          <div class="result-box">
+            <div class="result-label">Logarithm value</div>
+            <div id="resultValue" class="result-value">-</div>
+            <div id="resultMeta" class="result-meta">No calculation yet.</div>
+            <div id="resultNote" class="result-note">The result is shown as log base b of the selected value.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="math-expression-utils.js"></script>
+  <script src="tool-base-footer.js"></script>
+  <script src="logarithm-tool.js"></script>
+</body>
+</html>

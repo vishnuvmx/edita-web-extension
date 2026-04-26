@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Unit Converter</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .tool-main { font-size: 15.5px; line-height: 1.6; }
+    .tool-main h1 { font-size: 40px; line-height: 1.12; margin-bottom: 8px; }
+    .accent { color: var(--brand); }
+    .layout { display: flex; flex-direction: column; gap: 16px; }
+    .panel { background: linear-gradient(180deg, #fff 0%, #f8fbff 100%); border: 1px solid #e2ecf7; border-radius: 14px; padding: 14px; box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04); }
+    .section-label { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; color: #475569; text-transform: uppercase; display: block; margin-bottom: 10px; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .grid label { font-size: 12.5px; margin-bottom: 7px; color: #1e293b; }
+    .grid input { border-radius: 12px; padding: 12px 13px; font-size: 14.5px; }
+    .action-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
+    .action-grid button { margin-top: 0; font-family: 'Poppins'; font-weight: 600; font-size: 14px; padding: 12px 14px; }
+    .action-grid .cta-secondary, .action-grid .cta-ghost { background: linear-gradient(180deg, #fff 0%, #f4f7fb 100%); color: #0f172a; border: 1px solid #d0dbe8; box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08); }
+    .action-grid .cta-secondary:hover, .action-grid .cta-ghost:hover { border-color: #b9c8da; box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12); }
+    .result-card { background: #fff; border: 1px solid #dbe7f3; border-radius: 14px; padding: 14px; }
+    .result-value { font-size: clamp(26px, 5vw, 36px); font-weight: 800; line-height: 1.1; color: #0f172a; word-break: break-word; }
+    .result-meta { margin-top: 8px; color: #64748b; font-size: 13px; }
+    .pair-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
+    .mini-card { background: #f8fbff; border: 1px solid #dbe7f3; border-radius: 12px; padding: 12px; }
+    .mini-label { display: block; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #64748b; margin-bottom: 4px; }
+    .mini-value { font-size: 18px; font-weight: 800; color: #0f172a; word-break: break-word; }
+    .status { min-height: 20px; margin-top: 10px; font-size: 13px; color: #475569; }
+    @media (min-width: 620px) { .grid, .pair-grid { grid-template-columns: 1fr 1fr; } .action-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar"><a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a></div>
+    <section class="card tool-main">
+      <h1>Unit <span class="accent">Converter</span></h1>
+      <p>Convert across common SI and FPS-style units for length, mass, speed, area, volume, pressure, energy, data, time, and force.</p>
+      <div class="layout">
+        <div class="panel">
+          <span class="section-label">Input</span>
+          <div class="grid">
+            <div><label for="categorySelect">Category</label><select id="categorySelect"></select></div>
+            <div><label for="valueInput">Value</label><input id="valueInput" type="number" step="any" placeholder="1"></div>
+            <div><label for="fromUnit">From</label><select id="fromUnit"></select></div>
+            <div><label for="toUnit">To</label><select id="toUnit"></select></div>
+            <div><label for="primaryOutput">Result</label><div class="result-card"><div id="primaryOutput" class="result-value">-</div><div id="resultMeta" class="result-meta">Choose a category and units.</div></div></div>
+          </div>
+          <div class="action-grid">
+            <button id="convertBtn" class="cta-primary" type="button">Convert</button>
+            <button id="swapBtn" class="cta-secondary" type="button">Swap Units</button>
+            <button id="copyBtn" class="cta-secondary" type="button">Copy Result</button>
+            <button id="resetBtn" class="cta-ghost" type="button">Reset</button>
+          </div>
+        </div>
+        <div class="panel">
+          <span class="section-label">Quick Reference</span>
+          <div class="pair-grid">
+            <div class="mini-card"><span class="mini-label">From Unit</span><div id="fromValue" class="mini-value">-</div></div>
+            <div class="mini-card"><span class="mini-label">To Unit</span><div id="toValue" class="mini-value">-</div></div>
+            <div class="mini-card"><span class="mini-label">Category</span><div id="categoryValue" class="mini-value">-</div></div>
+            <div class="mini-card"><span class="mini-label">Base Value</span><div id="baseValue" class="mini-value">-</div></div>
+          </div>
+          <div id="status" class="status" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="tool-base-footer.js"></script>
+  <script src="unit-converter.js"></script>
+</body>
+</html>

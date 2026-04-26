@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Integration</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap');
+
+    :root {
+      --tool-accent: #0284c7;
+      --tool-accent-dark: #0f766e;
+      --tool-surface: #f7fbff;
+      --tool-border: #dbe8f3;
+      --tool-soft: #dff7ff;
+    }
+
+    .integration-main h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .integration-main h1 {
+      margin-bottom: 10px;
+    }
+
+    .integration-layout {
+      display: grid;
+      gap: 14px;
+    }
+
+    .tool-section,
+    .result-section {
+      border: 1px solid var(--tool-border);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, var(--tool-surface) 100%);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+      padding: 14px;
+    }
+
+    .section-label {
+      display: block;
+      margin-bottom: 12px;
+      color: #475569;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .field-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field-grid label {
+      color: #1e293b;
+      font-size: 12.5px;
+      margin-bottom: 7px;
+      letter-spacing: normal;
+    }
+
+    .field-grid input {
+      border-radius: 12px;
+      border-color: #cfe0ee;
+      background: #ffffff;
+      font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      font-size: 15px;
+      padding: 12px 13px;
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .example-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .action-row button,
+    .example-chip {
+      margin-top: 0;
+      width: 100%;
+      font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .action-row .cta-primary {
+      box-shadow: 0 12px 24px rgba(16, 185, 129, 0.28);
+      background: linear-gradient(135deg, var(--tool-accent) 0%, var(--tool-accent-dark) 100%);
+    }
+
+    .action-row .cta-secondary,
+    .action-row .cta-ghost,
+    .example-chip {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .action-row .cta-secondary:hover,
+    .action-row .cta-ghost:hover,
+    .example-chip:hover {
+      border-color: #b9c8da;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .result-box {
+      border-radius: 16px;
+      border: 1px solid rgba(2, 132, 199, 0.16);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(236, 249, 255, 0.95));
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .result-label {
+      color: #64748b;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .result-value {
+      color: #0f172a;
+      font-size: clamp(24px, 5vw, 34px);
+      font-weight: 800;
+      line-height: 1.1;
+      word-break: break-word;
+    }
+
+    .result-meta {
+      color: #64748b;
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    .status {
+      min-height: 20px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      word-break: break-word;
+    }
+
+    .status[data-tone='success'] {
+      color: var(--success);
+    }
+
+    .status[data-tone='error'] {
+      color: var(--danger);
+    }
+
+    .example-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 520px) {
+      .split-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .action-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card integration-main">
+      <h1>Integration</h1>
+      <p>Approximate definite integrals for any function of <strong>x</strong> using Simpson's rule.</p>
+
+      <div class="integration-layout">
+        <div class="tool-section">
+          <span class="section-label">Function</span>
+          <div class="field-grid">
+            <div>
+              <label for="expressionInput">f(x)</label>
+              <input id="expressionInput" type="text" placeholder="sin(x) + x^2">
+            </div>
+
+            <div class="split-grid">
+              <div>
+                <label for="lowerLimitInput">Lower limit</label>
+                <input id="lowerLimitInput" type="number" step="any" value="0">
+              </div>
+
+              <div>
+                <label for="upperLimitInput">Upper limit</label>
+                <input id="upperLimitInput" type="number" step="any" value="3">
+              </div>
+            </div>
+
+            <div>
+              <label for="stepsInput">Steps</label>
+              <input id="stepsInput" type="number" min="2" step="1" value="600">
+            </div>
+
+            <div class="example-row" aria-label="Example functions">
+              <button class="example-chip" type="button" data-example="x^2">x^2</button>
+              <button class="example-chip" type="button" data-example="sin(x)">sin(x)</button>
+              <button class="example-chip" type="button" data-example="exp(-x^2)">exp(-x^2)</button>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button id="computeBtn" class="cta-primary" type="button">Integrate Function</button>
+            <button id="resetBtn" class="cta-secondary" type="button">Reset Values</button>
+          </div>
+
+          <div id="status" class="status" role="status" aria-live="polite">Enter a function and limits to get the area under the curve.</div>
+        </div>
+
+        <div class="result-section">
+          <span class="section-label">Result</span>
+          <div class="result-box">
+            <div class="result-label">Approximate integral</div>
+            <div id="resultValue" class="result-value">-</div>
+            <div id="resultMeta" class="result-meta">No calculation yet.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="math-expression-utils.js"></script>
+  <script src="tool-base-footer.js"></script>
+  <script src="integration-tool.js"></script>
+</body>
+</html>

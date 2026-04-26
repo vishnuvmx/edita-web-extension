@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Color Converter</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
+
+    .color-main {
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+
+    .color-main h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .highlight {
+      color: var(--brand);
+    }
+
+    .tool-section {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #e2ecf7;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .color-layout {
+      display: grid;
+      gap: 16px;
+    }
+
+    .preview-panel {
+      display: grid;
+      gap: 12px;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .preview-stage {
+      width: min(100%, 320px);
+      display: grid;
+      justify-items: center;
+      gap: 10px;
+    }
+
+    .color-preview {
+      --preview-color: #10b981;
+      --preview-text: #ffffff;
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: var(--preview-color);
+      border: 10px solid rgba(255, 255, 255, 0.7);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.35),
+        0 18px 38px rgba(15, 23, 42, 0.14);
+    }
+
+    .color-preview::before {
+      content: '';
+      position: absolute;
+      inset: 16px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      pointer-events: none;
+    }
+
+    .color-preview::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 28% 24%, rgba(255, 255, 255, 0.34), transparent 28%),
+        radial-gradient(circle at 70% 78%, rgba(15, 23, 42, 0.08), transparent 34%);
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 0.7;
+    }
+
+    .preview-badge,
+    .preview-value,
+    .preview-subtle {
+      position: relative;
+      z-index: 1;
+    }
+
+    .preview-badge {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.22);
+      color: var(--preview-text);
+      backdrop-filter: blur(8px);
+    }
+
+    .preview-value {
+      font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      font-size: clamp(22px, 5vw, 34px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      margin-top: 6px;
+      color: var(--preview-text);
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    }
+
+    .preview-subtle {
+      font-size: 12px;
+      color: color-mix(in srgb, var(--preview-text) 80%, transparent);
+      margin-top: 2px;
+    }
+
+    .input-grid,
+    .output-grid,
+    .examples-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .control-group label {
+      font-size: 12.5px;
+      margin-bottom: 7px;
+      color: #1e293b;
+      letter-spacing: normal;
+    }
+
+    .control-group input,
+    .control-group textarea {
+      width: 100%;
+      border-radius: 12px;
+      padding: 12px 13px;
+      font-size: 14.5px;
+    }
+
+    .control-group textarea {
+      min-height: 72px;
+      resize: vertical;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+    }
+
+    .picker-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .picker-row input[type="color"] {
+      width: 54px;
+      height: 54px;
+      padding: 0;
+      border: 1px solid #c7d6e6;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72), 0 4px 10px rgba(15, 23, 42, 0.04);
+      cursor: pointer;
+      overflow: hidden;
+      appearance: none;
+    }
+
+    .picker-row input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+      border-radius: 50%;
+    }
+
+    .picker-row input[type="color"]::-webkit-color-swatch {
+      border: none;
+      border-radius: 50%;
+    }
+
+    .picker-row input[type="color"]::-moz-color-swatch {
+      border: none;
+      border-radius: 50%;
+    }
+
+    .picker-row .helper {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .result-card {
+      background: #f8fbff;
+      border: 1px solid #dbe7f3;
+      border-radius: 12px;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .result-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      color: #334155;
+      font-size: 13px;
+    }
+
+    .result-value {
+      font-size: 18px;
+      line-height: 1.3;
+      font-weight: 800;
+      color: #0f172a;
+      word-break: break-word;
+      text-align: right;
+    }
+
+    .examples-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .color-main button {
+      margin-top: 0;
+      font-family: "Poppins";
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 14px;
+    }
+
+    .cta-secondary {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .cta-secondary:hover {
+      border-color: #b9d6ea;
+      box-shadow: 0 8px 16px rgba(2, 132, 199, 0.14);
+      transform: translateY(-1px);
+    }
+
+    .cta-primary {
+      box-shadow: 0 12px 24px rgba(16, 185, 129, 0.28);
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #d9e4f1;
+      background: #f8fbff;
+      font-size: 13px;
+      min-height: 20px;
+    }
+
+    .sample-label {
+      margin-bottom: 0;
+    }
+
+    @media (min-width: 580px) {
+      .color-layout {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card color-main">
+      <h1>Color <span class="highlight">Converter</span></h1>
+      <p>Convert colors between HEX, RGB, and HSL formats with a live circular preview.</p>
+
+      <div class="tool-section">
+        <span class="section-label">Color Preview</span>
+        <div class="color-layout">
+          <div class="preview-panel">
+            <div class="preview-stage">
+              <div id="colorPreview" class="color-preview" aria-label="Color preview">
+                <div class="preview-badge">Preview</div>
+                <div id="previewValue" class="preview-value">#10B981</div>
+                <div id="previewSubtle" class="preview-subtle">rgb(16, 185, 129)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <label for="colorInput">Enter a color value</label>
+            <textarea id="colorInput" placeholder="Try #10b981, rgb(16, 185, 129), or hsl(160, 84%, 39%)">#10b981</textarea>
+
+            <div class="picker-row" style="margin-top: 10px;">
+              <input id="colorPicker" type="color" value="#10b981" aria-label="Pick a color">
+              <span class="helper">Pick a color or type any supported format</span>
+            </div>
+
+            <div class="examples-grid" style="margin-top: 12px;">
+              <button type="button" class="cta-secondary" data-sample="#10b981">Brand</button>
+              <button type="button" class="cta-secondary" data-sample="rgb(99, 102, 241)">Indigo</button>
+              <button type="button" class="cta-secondary" data-sample="hsl(12, 90%, 60%)">Coral</button>
+            </div>
+          </div>
+        </div>
+        <div id="status" class="status">Enter a HEX, RGB, or HSL color to see the conversion.</div>
+      </div>
+
+      <div class="tool-section">
+        <span class="section-label">Converted Values</span>
+
+        <div class="output-grid">
+          <div class="result-card">
+            <div class="result-line">
+              <span>HEX</span>
+              <span id="hexValue" class="result-value">#10B981</span>
+            </div>
+            <button id="copyHex" type="button" class="cta-primary">Copy HEX</button>
+          </div>
+
+          <div class="result-card">
+            <div class="result-line">
+              <span>RGB</span>
+              <span id="rgbValue" class="result-value">rgb(16, 185, 129)</span>
+            </div>
+            <button id="copyRgb" type="button" class="cta-primary">Copy RGB</button>
+          </div>
+
+          <div class="result-card">
+            <div class="result-line">
+              <span>HSL</span>
+              <span id="hslValue" class="result-value">hsl(160, 84%, 39%)</span>
+            </div>
+            <button id="copyHsl" type="button" class="cta-primary">Copy HSL</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="tool-base-footer.js"></script>
+  <script src="color-converter.js"></script>
+</body>
+</html>

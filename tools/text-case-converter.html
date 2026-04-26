@@ -48,7 +48,7 @@
 
     .button-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 10px;
       margin-top: 12px;
     }
@@ -92,7 +92,7 @@
 
     <section class="card text-tool-main">
       <h1>Text Case <span style="color: var(--brand);">Converter</span></h1>
-      <p>Convert text between different cases: uppercase, lowercase, title case, and more.</p>
+      <p>Convert text between different cases: uppercase, lowercase, title case, and sentence case.</p>
 
       <div class="tool-section">
         <span class="section-label">Input Text</span>
@@ -103,8 +103,6 @@
           <button type="button" data-case="lower">lowercase</button>
           <button type="button" data-case="title">Title Case</button>
           <button type="button" data-case="sentence">Sentence case</button>
-          <button type="button" data-case="toggle">tOGGLE cASE</button>
-          <button type="button" data-case="capitalize">Capitalize</button>
         </div>
       </div>
 
@@ -116,6 +114,7 @@
     </section>
   </main>
 
+  <script src="tool-base-footer.js"></script>
   <script src="text-case-converter.js"></script>
 </body>
 </html>

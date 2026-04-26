@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Spin The Wheel</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap');
+
+    .wheel-main {
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .wheel-main h1 {
+      font-size: 40px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .highlight {
+      color: var(--brand);
+    }
+
+    .tool-section {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #e2ecf7;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .wheel-layout {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    .wheel-stage {
+      position: relative;
+      border-radius: 14px;
+      border: 1px solid #dbe7f3;
+      background:
+        radial-gradient(circle at 24% 15%, rgba(16, 185, 129, 0.14), transparent 44%),
+        linear-gradient(180deg, #fbfdff 0%, #edf5ff 100%);
+      min-height: 320px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      padding: 18px;
+    }
+
+    .wheel-pointer {
+      position: absolute;
+      top: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 13px solid transparent;
+      border-right: 13px solid transparent;
+      border-top: 22px solid #0f172a;
+      filter: drop-shadow(0 3px 6px rgba(15, 23, 42, 0.25));
+      z-index: 2;
+    }
+
+    .wheel-frame {
+      width: min(92vw, 300px);
+      height: min(92vw, 300px);
+      border-radius: 50%;
+      position: relative;
+      border: 8px solid rgba(255, 255, 255, 0.96);
+      box-shadow:
+        inset 0 0 0 2px rgba(16, 185, 129, 0.22),
+        0 16px 34px rgba(15, 23, 42, 0.14);
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    #wheelCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      transform: rotate(var(--wheel-rotation, 0deg));
+      transition: transform 4.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .wheel-center-cap {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      width: 38px;
+      height: 38px;
+      transform: translate(-50%, -50%);
+      border-radius: 999px;
+      border: 3px solid rgba(255, 255, 255, 0.9);
+      background: linear-gradient(135deg, #34d399 0%, #059669 76%);
+      box-shadow: 0 8px 18px rgba(16, 185, 129, 0.35);
+      z-index: 2;
+    }
+
+    .result-chip {
+      margin-top: 12px;
+      border-radius: 12px;
+      border: 1px solid #d9e4f1;
+      background: #f8fbff;
+      padding: 11px 12px;
+      font-size: 14px;
+      color: #334155;
+    }
+
+    .result-chip strong {
+      color: #0f172a;
+      font-size: 20px;
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .action-grid button {
+      margin-top: 0;
+      font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 14px;
+    }
+
+    .cta-secondary {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .options-box textarea {
+      width: 100%;
+      min-height: 130px;
+      border: 1px solid #dbe7f3;
+      border-radius: 12px;
+      padding: 11px 12px;
+      resize: vertical;
+      font: 500 13px/1.5 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .options-box textarea:focus {
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+
+    .helper {
+      margin-top: 8px;
+      margin-bottom: 0;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .tiny-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .tiny-actions button {
+      margin-top: 0;
+      width: auto;
+      padding: 8px 10px;
+      font-size: 12px;
+      border-radius: 10px;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .stat-card {
+      border-radius: 12px;
+      border: 1px solid #d9e4f1;
+      background: #f8fbff;
+      padding: 10px;
+    }
+
+    .stat-card span {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+    }
+
+    .stat-card strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 22px;
+      line-height: 1;
+      color: #0f172a;
+    }
+
+    .history-list {
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      max-height: 220px;
+      overflow-y: auto;
+    }
+
+    .history-list li {
+      border-radius: 10px;
+      border: 1px solid #dbe7f3;
+      background: #ffffff;
+      padding: 8px 10px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 12px;
+      color: #475569;
+    }
+
+    .history-list li strong {
+      color: #0f172a;
+      font-size: 14px;
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #d9e4f1;
+      background: #f8fbff;
+      font-size: 13px;
+    }
+
+    @media (min-width: 680px) {
+      .wheel-layout {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card wheel-main">
+      <h1>Spin The <span class="highlight">Wheel</span></h1>
+      <p>Create your own wheel, spin it, and keep your options plus spin history saved locally in this browser profile.</p>
+
+      <div class="tool-section">
+        <span class="section-label">Wheel Arena</span>
+        <div class="wheel-layout">
+          <div>
+            <div class="wheel-stage" aria-label="Spin Wheel">
+              <div class="wheel-pointer" aria-hidden="true"></div>
+              <div class="wheel-frame">
+                <canvas id="wheelCanvas" width="600" height="600"></canvas>
+                <div class="wheel-center-cap" aria-hidden="true"></div>
+              </div>
+            </div>
+
+            <div class="result-chip" aria-live="polite">Last winner: <strong id="lastWinner">-</strong></div>
+            <div class="action-grid">
+              <button id="spinBtn" type="button">Spin Wheel</button>
+              <button id="clearHistoryBtn" class="cta-secondary" type="button">Clear History</button>
+            </div>
+            <div id="status" class="status" role="status" aria-live="polite">Add at least 2 options and spin.</div>
+          </div>
+
+          <div>
+            <div class="options-box">
+              <label for="entriesInput">Wheel Entries</label>
+              <textarea id="entriesInput" placeholder="Pizza&#10;Movie&#10;Board Game"></textarea>
+              <p class="helper">Use one option per line. You can also paste comma-separated text.</p>
+              <div class="tiny-actions">
+                <button id="saveEntriesBtn" type="button">Save Entries</button>
+                <button id="resetEntriesBtn" class="cta-secondary" type="button">Reset Defaults</button>
+              </div>
+            </div>
+
+            <div class="stats-row">
+              <div class="stat-card">
+                <span>Total Spins</span>
+                <strong id="totalSpins">0</strong>
+              </div>
+              <div class="stat-card">
+                <span>Options</span>
+                <strong id="optionCount">0</strong>
+              </div>
+            </div>
+
+            <ul id="historyList" class="history-list" aria-live="polite"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="tool-base-footer.js"></script>
+  <script src="spin-the-wheel.js"></script>
+</body>
+</html>

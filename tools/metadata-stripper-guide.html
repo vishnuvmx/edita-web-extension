@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Metadata Stripper Guide</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .meta-main {
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+
+    .meta-main h1 {
+      font-size: 40px;
+      line-height: 1.12;
+      margin-bottom: 10px;
+    }
+
+    .accent {
+      color: var(--brand);
+    }
+
+    .tool-section {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #e2ecf7;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+      margin-bottom: 14px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .file-input-native {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .file-picker-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .file-picker-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border-radius: 12px;
+      border: 1px solid #d0dbe8;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      font-family: "Poppins", "Inter", "Segoe UI", sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      padding: 6px;
+      cursor: pointer;
+      min-height: 44px;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .file-picker-btn:hover {
+      transform: translateY(-1px);
+      border-color: #b9c8da;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+    }
+
+    .file-picker-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #34d399 0%, #059669 70%);
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 700;
+      flex: 0 0 auto;
+      box-shadow: 0 8px 16px rgba(16, 185, 129, 0.26);
+    }
+
+    .file-name {
+      font-size: 12px;
+      color: #334155;
+      font-weight: 600;
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      border: 1px solid #d0dbe8;
+      border-radius: 10px;
+      padding: 10px 12px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      word-break: break-word;
+      flex: 1 1 220px;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .preview-frame {
+      border: 1px dashed #cddaea;
+      border-radius: 12px;
+      min-height: 220px;
+      background: linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-top: 12px;
+    }
+
+    .preview-frame img {
+      max-width: 100%;
+      max-height: 320px;
+      object-fit: contain;
+      display: none;
+    }
+
+    .empty-state {
+      font-size: 13px;
+      color: #64748b;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .meta-grid {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .meta-row {
+      border: 1px solid #dbe7f3;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 13px;
+      color: #334155;
+      background: #ffffff;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .hint-list {
+      margin: 0;
+      padding-left: 18px;
+      color: #475569;
+      font-size: 13px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .action-row button {
+      margin-top: 0;
+      font-family: "Poppins";
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 14px;
+    }
+
+    .action-row .cta-secondary {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    @media (min-width: 620px) {
+      .action-row {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card meta-main">
+      <h1>Metadata <span class="accent">Stripper Guide</span></h1>
+      <p>Upload an image, review basic file metadata, and export a clean copy from canvas to remove most embedded metadata.</p>
+
+      <div class="tool-section">
+        <span class="section-label">1) Select Image</span>
+        <input id="imageInput" class="file-input-native" type="file" accept="image/*">
+        <div class="file-picker-row">
+          <label class="file-picker-btn" for="imageInput">
+            <span class="file-picker-icon">+</span>
+            <span>Select Image</span>
+          </label>
+          <div class="file-name" id="fileName">No file selected</div>
+        </div>
+
+        <div class="preview-frame">
+          <img id="previewImage" alt="Selected image preview">
+          <div class="empty-state" id="emptyState">Upload an image to preview and strip metadata.</div>
+        </div>
+
+        <div class="meta-grid" id="metaGrid">
+          <div class="meta-row">Name: -</div>
+          <div class="meta-row">Type: -</div>
+          <div class="meta-row">Size: -</div>
+          <div class="meta-row">Dimensions: -</div>
+          <div class="meta-row">Last Modified: -</div>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <span class="section-label">2) Export Clean Image</span>
+        <div class="field-grid">
+          <div>
+            <label for="formatSelect">Output format</label>
+            <select id="formatSelect">
+              <option value="image/jpeg">JPEG</option>
+              <option value="image/png">PNG</option>
+              <option value="image/webp">WEBP</option>
+            </select>
+          </div>
+          <div>
+            <label for="qualityInput">Quality (JPEG/WEBP)</label>
+            <input id="qualityInput" type="number" min="10" max="100" value="92">
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button id="stripBtn" type="button">Strip Metadata & Download</button>
+          <button id="clearBtn" class="cta-secondary" type="button">Clear</button>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <span class="section-label">How This Guide Works</span>
+        <ul class="hint-list">
+          <li>Canvas re-export usually removes EXIF and GPS metadata.</li>
+          <li>Use JPEG/WEBP for smaller files, PNG for lossless quality.</li>
+          <li>This runs locally in your browser; images are not uploaded.</li>
+          <li>For sensitive photos, avoid sharing the original file directly.</li>
+        </ul>
+      </div>
+
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script src="tool-base-footer.js"></script>
+  <script src="metadata-stripper-guide.js"></script>
+</body>
+</html>

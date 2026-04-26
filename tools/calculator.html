@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Calculator</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
+
+    :root {
+      --calc-accent: #0ea5e9;
+      --calc-accent-dark: #0369a1;
+      --calc-soft: #e0f2fe;
+      --calc-panel: #f8fbff;
+      --calc-border: #e2ecf7;
+    }
+
+    .calc-main {
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+
+    .calc-main h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .highlight {
+        color: var(--brand);
+    }
+
+    .calc-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tool-section {
+      background: linear-gradient(180deg, #ffffff 0%, var(--calc-panel) 100%);
+      border: 1px solid var(--calc-border);
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+      margin-bottom: 16px;
+    }
+
+    .display-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 9px;
+    }
+
+    .display-input {
+      width: 100%;
+      border: 1px solid #cfe5f6;
+      border-radius: 12px;
+      padding: 12px 13px;
+      font-size: 17px;
+      font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      font-weight: 500;
+      color: #0f172a;
+      background: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .result-box {
+      border: 1px solid #dbe7f3;
+      border-radius: 12px;
+      padding: 11px 12px;
+      background: linear-gradient(180deg, #ffffff 0%, #f3faff 100%);
+      min-height: 54px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    .result-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    .result-value {
+      font-size: clamp(18px, 4vw, 24px);
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.2;
+      word-break: break-all;
+    }
+
+    .result-meta {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .helper-block {
+      margin-top: 10px;
+      border: 1px solid #dbe9f5;
+      border-radius: 12px;
+      padding: 10px;
+      background: linear-gradient(180deg, #ffffff 0%, #f5fbff 100%);
+      display: grid;
+      gap: 10px;
+    }
+
+    .helper-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .helper-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #475569;
+      text-transform: uppercase;
+    }
+
+    .mode-toggle {
+      display: inline-flex;
+      border: 1px solid #cfe2f0;
+      border-radius: 999px;
+      padding: 2px;
+      background: #eff6ff;
+      gap: 2px;
+    }
+
+    .mode-btn {
+      margin: 0;
+      width: auto;
+      min-width: 52px;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      color: #1e293b;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .mode-btn:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: #bfdbfe;
+      background: #dbeafe;
+    }
+
+    .mode-btn[data-active='true'] {
+      background: linear-gradient(135deg, #0ea5e9 0%, #0369a1 90%);
+      color: #ffffff;
+      border-color: #0284c7;
+    }
+
+    .quick-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .quick-btn {
+      margin: 0;
+      width: auto;
+      border-radius: 999px;
+      border: 1px solid #cfe2f0;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 10px;
+      box-shadow: none;
+    }
+
+    .quick-btn:hover {
+      transform: none;
+      border-color: #93c5fd;
+      background: #eff6ff;
+      box-shadow: none;
+    }
+
+    .hint-text {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.4;
+    }
+
+    .tab-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .tab-btn {
+      margin: 0;
+      width: 100%;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      padding: 10px 8px;
+      border-radius: 11px;
+      border: 1px solid #cfe2f0;
+      color: #1e293b;
+      background: linear-gradient(180deg, #ffffff 0%, #f6faff 100%);
+      box-shadow: 0 5px 12px rgba(15, 23, 42, 0.06);
+    }
+
+    .tab-btn:hover {
+      border-color: #b9d6ea;
+      box-shadow: 0 8px 16px rgba(2, 132, 199, 0.14);
+      transform: translateY(-1px);
+    }
+
+    .tab-btn[data-active='true'] {
+      background: linear-gradient(140deg, var(--calc-accent) 0%, var(--calc-accent-dark) 82%);
+      border-color: #0284c7;
+      color: #ffffff;
+      box-shadow: 0 11px 22px rgba(2, 132, 199, 0.28);
+    }
+
+    .pad-grid {
+      display: none;
+      gap: 8px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .pad-grid[data-active='true'] {
+      display: grid;
+    }
+
+    .pad-btn {
+      margin: 0;
+      width: 100%;
+      border-radius: 11px;
+      border: 1px solid #d6e5f2;
+      background: linear-gradient(180deg, #ffffff 0%, #f6fbff 100%);
+      color: #0f172a;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      min-height: 44px;
+      padding: 9px 8px;
+      box-shadow: 0 5px 12px rgba(15, 23, 42, 0.06);
+    }
+
+    .pad-btn:hover {
+      border-color: #c2d9eb;
+      box-shadow: 0 8px 16px rgba(2, 132, 199, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .pad-btn[data-kind='operator'] {
+      background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%);
+      color: #0c4a6e;
+      border-color: #bae6fd;
+    }
+
+    .pad-btn[data-kind='action'] {
+      background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 100%);
+      color: #9a3412;
+      border-color: #fed7aa;
+    }
+
+    .pad-btn[data-kind='equals'] {
+      background: linear-gradient(145deg, #22c55e 0%, #15803d 80%);
+      color: #ffffff;
+      border-color: #16a34a;
+      box-shadow: 0 11px 22px rgba(21, 128, 61, 0.28);
+    }
+
+    .row-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .row-actions button {
+      margin: 0;
+      font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      font-size: 13.5px;
+      padding: 11px 10px;
+    }
+
+    .row-actions .secondary {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .row-actions .warning {
+      background: linear-gradient(180deg, #fff7ed 0%, #ffedd5 100%);
+      color: #9a3412;
+      border: 1px solid #fed7aa;
+      box-shadow: 0 6px 14px rgba(251, 146, 60, 0.15);
+    }
+
+    .status {
+      margin-top: 11px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #d9e4f1;
+      background: #f8fbff;
+      font-size: 13px;
+    }
+
+    @media (max-width: 420px) {
+      .calc-main h1 {
+        font-size: 42px;
+      }
+
+      .pad-btn {
+        min-height: 40px;
+        font-size: 13px;
+      }
+
+      .tab-btn {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card calc-main">
+      <h1>Smart <span class="highlight">Calculator</span></h1>
+      <p>Basic operations, scientific math functions, and advanced functions in one place.</p>
+
+      <div class="calc-layout">
+        <div class="tool-section">
+          <span class="display-label">Expression</span>
+          <input id="expressionInput" class="display-input" type="text" placeholder="Example: sin(30) + 5^2" spellcheck="false" autocomplete="off">
+
+          <div class="result-box" aria-live="polite">
+            <span class="result-label">Result</span>
+            <div id="resultValue" class="result-value">0</div>
+            <div id="resultMeta" class="result-meta">Last answer: 0</div>
+          </div>
+
+          <div class="helper-block" aria-label="Calculator guidance">
+            <div class="helper-row">
+              <span class="helper-label">Trig Mode</span>
+              <div class="mode-toggle" role="group" aria-label="Angle mode">
+                <button id="modeDeg" class="mode-btn" type="button" data-mode="deg" data-active="true">DEG</button>
+                <button id="modeRad" class="mode-btn" type="button" data-mode="rad" data-active="false">RAD</button>
+              </div>
+            </div>
+
+            <div>
+              <div class="helper-label" style="margin-bottom: 6px;">Try Examples</div>
+              <div class="quick-list">
+                <button class="quick-btn" type="button" data-example="(25 + 15) * 2">(25 + 15) * 2</button>
+                <button class="quick-btn" type="button" data-example="sin(30)^2 + cos(30)^2">sin(30)^2 + cos(30)^2</button>
+                <button class="quick-btn" type="button" data-example="nCr(10,3)">nCr(10,3)</button>
+                <button class="quick-btn" type="button" data-example="gcd(54,24)">gcd(54,24)</button>
+              </div>
+            </div>
+
+            <div class="hint-text">Use ^ for powers, fact(n) for factorial, and ans for previous result. Press Enter to calculate.</div>
+          </div>
+        </div>
+
+        <div class="tool-section">
+          <div class="tab-row" role="tablist" aria-label="Calculator Mode">
+            <button id="tabBasic" class="tab-btn" type="button" data-active="true" data-tab="basic" role="tab" aria-selected="true">Basic</button>
+            <button id="tabMath" class="tab-btn" type="button" data-active="false" data-tab="math" role="tab" aria-selected="false">Math</button>
+            <button id="tabAdvanced" class="tab-btn" type="button" data-active="false" data-tab="advanced" role="tab" aria-selected="false">Advanced</button>
+          </div>
+
+          <div id="padBasic" class="pad-grid" data-active="true" role="tabpanel">
+            <button class="pad-btn" type="button" data-insert="7">7</button>
+            <button class="pad-btn" type="button" data-insert="8">8</button>
+            <button class="pad-btn" type="button" data-insert="9">9</button>
+            <button class="pad-btn" type="button" data-insert="/" data-kind="operator">/</button>
+            <button class="pad-btn" type="button" data-insert="4">4</button>
+            <button class="pad-btn" type="button" data-insert="5">5</button>
+            <button class="pad-btn" type="button" data-insert="6">6</button>
+            <button class="pad-btn" type="button" data-insert="*" data-kind="operator">*</button>
+            <button class="pad-btn" type="button" data-insert="1">1</button>
+            <button class="pad-btn" type="button" data-insert="2">2</button>
+            <button class="pad-btn" type="button" data-insert="3">3</button>
+            <button class="pad-btn" type="button" data-insert="-" data-kind="operator">-</button>
+            <button class="pad-btn" type="button" data-insert="0">0</button>
+            <button class="pad-btn" type="button" data-insert=".">.</button>
+            <button class="pad-btn" type="button" data-insert="%" data-kind="operator">%</button>
+            <button class="pad-btn" type="button" data-insert="+" data-kind="operator">+</button>
+            <button class="pad-btn" type="button" data-insert="(">(</button>
+            <button class="pad-btn" type="button" data-insert=")">)</button>
+            <button class="pad-btn" type="button" data-insert="^" data-kind="operator">x^y</button>
+            <button class="pad-btn" type="button" data-evaluate="true" data-kind="equals">=</button>
+          </div>
+
+          <div id="padMath" class="pad-grid" data-active="false" role="tabpanel">
+            <button class="pad-btn" type="button" data-insert="sin(">sin</button>
+            <button class="pad-btn" type="button" data-insert="cos(">cos</button>
+            <button class="pad-btn" type="button" data-insert="tan(">tan</button>
+            <button class="pad-btn" type="button" data-insert="ln(">ln</button>
+            <button class="pad-btn" type="button" data-insert="asin(">asin</button>
+            <button class="pad-btn" type="button" data-insert="acos(">acos</button>
+            <button class="pad-btn" type="button" data-insert="atan(">atan</button>
+            <button class="pad-btn" type="button" data-insert="log(">log</button>
+            <button class="pad-btn" type="button" data-insert="sqrt(">sqrt</button>
+            <button class="pad-btn" type="button" data-insert="cbrt(">cbrt</button>
+            <button class="pad-btn" type="button" data-insert="abs(">abs</button>
+            <button class="pad-btn" type="button" data-insert="exp(">exp</button>
+            <button class="pad-btn" type="button" data-insert="pow(">pow</button>
+            <button class="pad-btn" type="button" data-insert="floor(">floor</button>
+            <button class="pad-btn" type="button" data-insert="ceil(">ceil</button>
+            <button class="pad-btn" type="button" data-insert="round(">round</button>
+            <button class="pad-btn" type="button" data-insert="pi" data-kind="operator">pi</button>
+            <button class="pad-btn" type="button" data-insert="e" data-kind="operator">e</button>
+            <button class="pad-btn" type="button" data-insert="," data-kind="operator">,</button>
+            <button class="pad-btn" type="button" data-evaluate="true" data-kind="equals">=</button>
+          </div>
+
+          <div id="padAdvanced" class="pad-grid" data-active="false" role="tabpanel">
+            <button class="pad-btn" type="button" data-insert="fact(">fact(n)</button>
+            <button class="pad-btn" type="button" data-insert="nPr(">nPr</button>
+            <button class="pad-btn" type="button" data-insert="nCr(">nCr</button>
+            <button class="pad-btn" type="button" data-insert="gcd(">gcd</button>
+            <button class="pad-btn" type="button" data-insert="lcm(">lcm</button>
+            <button class="pad-btn" type="button" data-insert="rand(">rand</button>
+            <button class="pad-btn" type="button" data-insert="ans" data-kind="operator">ans</button>
+            <button class="pad-btn" type="button" data-insert="min(">min</button>
+            <button class="pad-btn" type="button" data-insert="max(">max</button>
+            <button class="pad-btn" type="button" data-insert="^2">x^2</button>
+            <button class="pad-btn" type="button" data-insert="^3">x^3</button>
+            <button class="pad-btn" type="button" data-insert="1/(">1/x</button>
+            <button class="pad-btn" type="button" data-insert="(" data-kind="operator">(</button>
+            <button class="pad-btn" type="button" data-insert=")" data-kind="operator">)</button>
+            <button class="pad-btn" type="button" data-backspace="true" data-kind="action">DEL</button>
+            <button class="pad-btn" type="button" data-evaluate="true" data-kind="equals">=</button>
+          </div>
+
+          <div class="row-actions">
+            <button id="deleteBtn" class="warning" type="button">Delete</button>
+            <button id="clearBtn" class="secondary" type="button">Clear</button>
+            <button id="evaluateBtn" type="button">Calculate</button>
+          </div>
+
+          <div id="status" class="status" role="status" aria-live="polite">Ready.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="tool-base-footer.js"></script>
+  <script src="calculator.js"></script>
+</body>
+</html>

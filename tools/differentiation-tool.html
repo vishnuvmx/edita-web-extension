@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Differentiation</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap');
+
+    :root {
+      --tool-accent: #d97706;
+      --tool-accent-dark: #b45309;
+      --tool-surface: #fffaf2;
+      --tool-border: #f2dfbf;
+      --tool-soft: #fde9c6;
+    }
+
+    .differentiation-main h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .differentiation-main h1 {
+      margin-bottom: 10px;
+    }
+
+    .differentiation-layout {
+      display: grid;
+      gap: 14px;
+    }
+
+    .tool-section,
+    .result-section {
+      border: 1px solid var(--tool-border);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, var(--tool-surface) 100%);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+      padding: 14px;
+    }
+
+    .section-label {
+      display: block;
+      margin-bottom: 12px;
+      color: #475569;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .field-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .field-grid label {
+      color: #1e293b;
+      font-size: 12.5px;
+      margin-bottom: 7px;
+      letter-spacing: normal;
+    }
+
+    .field-grid input,
+    .field-grid select {
+      border-radius: 12px;
+      border-color: #ebd6aa;
+      background: #ffffff;
+      font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      font-size: 15px;
+      padding: 12px 13px;
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .example-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .action-row button,
+    .example-chip {
+      margin-top: 0;
+      width: 100%;
+      font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .action-row .cta-primary {
+      box-shadow: 0 12px 24px rgba(16, 185, 129, 0.28);
+      background: linear-gradient(135deg, var(--tool-accent) 0%, var(--tool-accent-dark) 100%);
+    }
+
+    .action-row .cta-secondary,
+    .action-row .cta-ghost,
+    .example-chip {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .action-row .cta-secondary:hover,
+    .action-row .cta-ghost:hover,
+    .example-chip:hover {
+      border-color: #b9c8da;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .result-box {
+      border-radius: 16px;
+      border: 1px solid rgba(217, 119, 6, 0.16);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 247, 235, 0.95));
+      padding: 16px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .result-label {
+      color: #64748b;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .result-value {
+      color: #0f172a;
+      font-size: clamp(24px, 5vw, 34px);
+      font-weight: 800;
+      line-height: 1.1;
+      word-break: break-word;
+    }
+
+    .result-meta {
+      color: #64748b;
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+
+    .status {
+      min-height: 20px;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      word-break: break-word;
+    }
+
+    .status[data-tone='success'] {
+      color: var(--success);
+    }
+
+    .status[data-tone='error'] {
+      color: var(--danger);
+    }
+
+    .example-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 520px) {
+      .split-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .action-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card differentiation-main">
+      <h1>Differentiation</h1>
+      <p>Estimate first, second, or third derivatives at a point using a fixed internal step size.</p>
+
+      <div class="differentiation-layout">
+        <div class="tool-section">
+          <span class="section-label">Function</span>
+          <div class="field-grid">
+            <div>
+              <label for="expressionInput">f(x)</label>
+              <input id="expressionInput" type="text" placeholder="x^3 + 2x">
+            </div>
+
+            <div class="split-grid">
+              <div>
+                <label for="pointInput">Differentiate at x</label>
+                <input id="pointInput" type="number" step="any" value="2">
+              </div>
+
+              <div>
+                <label for="orderInput">Derivative order</label>
+                <select id="orderInput">
+                  <option value="1" selected>First derivative f'(x)</option>
+                  <option value="2">Second derivative f''(x)</option>
+                  <option value="3">Third derivative f'''(x)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="example-row" aria-label="Example functions">
+              <button class="example-chip" type="button" data-example="x^3">x^3</button>
+              <button class="example-chip" type="button" data-example="sin(x)">sin(x)</button>
+              <button class="example-chip" type="button" data-example="ln(x)">ln(x)</button>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button id="computeBtn" class="cta-primary" type="button">Differentiate Function</button>
+            <button id="resetBtn" class="cta-secondary" type="button">Reset Values</button>
+          </div>
+
+          <div id="status" class="status" role="status" aria-live="polite">Enter a function and point to estimate the derivative.</div>
+        </div>
+
+        <div class="result-section">
+          <span class="section-label">Result</span>
+          <div class="result-box">
+            <div class="result-label">Derivative at x</div>
+            <div id="resultValue" class="result-value">-</div>
+            <div id="resultMeta" class="result-meta">No calculation yet.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="math-expression-utils.js"></script>
+  <script src="tool-base-footer.js"></script>
+  <script src="differentiation-tool.js"></script>
+</body>
+</html>

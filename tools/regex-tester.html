@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Regex Tester</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .tool-main { font-size: 15.5px; line-height: 1.6; }
+    .tool-main h1 { font-size: 40px; line-height: 1.12; margin-bottom: 8px; }
+    .accent { color: var(--brand); }
+    .layout { display: flex; flex-direction: column; gap: 16px; }
+    .panel { background: linear-gradient(180deg, #fff 0%, #f8fbff 100%); border: 1px solid #e2ecf7; border-radius: 14px; padding: 14px; box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04); }
+    .section-label { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; color: #475569; text-transform: uppercase; display: block; margin-bottom: 10px; }
+    textarea, input[type="text"] { width: 100%; border: 1px solid #d2deeb; border-radius: 12px; padding: 12px; font-size: 14px; line-height: 1.5; background: linear-gradient(180deg, #fff 0%, #f8fbff 100%); }
+    textarea { min-height: 170px; resize: vertical; font-family: Consolas, 'Courier New', monospace; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .grid label { font-size: 12.5px; margin-bottom: 7px; color: #1e293b; }
+    .flag-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+    .flag-chip { display: inline-flex; align-items: center; gap: 6px; padding: 8px 10px; border-radius: 999px; border: 1px solid #dbe7f3; background: #fff; font-size: 12px; font-weight: 600; color: #1e293b; }
+    .flag-chip input { margin: 0; }
+    .action-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 12px; }
+    .action-grid button { margin-top: 0; font-family: 'Poppins'; font-weight: 600; font-size: 14px; padding: 12px 14px; }
+    .action-grid .cta-secondary, .action-grid .cta-ghost { background: linear-gradient(180deg, #fff 0%, #f4f7fb 100%); color: #0f172a; border: 1px solid #d0dbe8; box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08); }
+    .action-grid .cta-secondary:hover, .action-grid .cta-ghost:hover { border-color: #b9c8da; box-shadow: 0 10px 20px rgba(15, 23, 42, 0.12); }
+    .summary { background: #f8fbff; border: 1px solid #dbe7f3; border-radius: 12px; padding: 12px; margin-top: 12px; }
+    .summary strong { color: #0f172a; }
+    .results { display: grid; gap: 10px; margin-top: 12px; }
+    .match-card { background: #fff; border: 1px solid #dbe7f3; border-radius: 12px; padding: 12px; }
+    .match-head { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+    .match-title { font-weight: 800; color: #0f172a; }
+    .match-index { font-size: 12px; color: #64748b; }
+    .match-text { font-family: Consolas, 'Courier New', monospace; white-space: pre-wrap; word-break: break-word; padding: 10px; background: #f8fbff; border-radius: 10px; border: 1px solid #dbe7f3; }
+    .groups { margin-top: 10px; display: grid; gap: 6px; }
+    .group-pill { font-size: 12px; border-radius: 999px; padding: 6px 10px; background: #eef6ff; border: 1px solid #d9e5f4; color: #1e293b; width: fit-content; }
+    .status { min-height: 20px; margin-top: 10px; font-size: 13px; color: #475569; }
+    @media (min-width: 720px) { .grid { grid-template-columns: 1fr 1fr; } .action-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar"><a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a></div>
+    <section class="card tool-main">
+      <h1><span class="accent">Regex</span> Tester</h1>
+      <p>Test patterns, flags, and sample text locally with instant match previews and capture groups.</p>
+      <div class="layout">
+        <div class="panel">
+          <span class="section-label">Input</span>
+          <div class="grid">
+            <div><label for="patternInput">Pattern</label><input id="patternInput" type="text" placeholder="\\b\\w+@\\w+\\.com\\b"></div>
+            <div><label>Flags</label><div class="flag-row">
+              <label class="flag-chip"><input type="checkbox" value="g" checked> g</label>
+              <label class="flag-chip"><input type="checkbox" value="i"> i</label>
+              <label class="flag-chip"><input type="checkbox" value="m"> m</label>
+              <label class="flag-chip"><input type="checkbox" value="s"> s</label>
+              <label class="flag-chip"><input type="checkbox" value="u"> u</label>
+              <label class="flag-chip"><input type="checkbox" value="y"> y</label>
+            </div></div>
+            <div style="grid-column: 1 / -1;"><label for="sampleInput">Sample text</label><textarea id="sampleInput" placeholder="Paste sample text here..."></textarea></div>
+          </div>
+          <div class="action-grid">
+            <button id="testBtn" class="cta-primary" type="button">Test Regex</button>
+            <button id="copyBtn" class="cta-secondary" type="button">Copy Matches</button>
+            <button id="clearBtn" class="cta-ghost" type="button">Clear</button>
+            <button id="fillExampleBtn" class="cta-secondary" type="button">Load Example</button>
+          </div>
+        </div>
+        <div class="panel">
+          <span class="section-label">Results</span>
+          <div id="summary" class="summary">Enter a pattern to start testing.</div>
+          <div id="results" class="results"></div>
+          <div id="status" class="status" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="tool-base-footer.js"></script>
+  <script src="regex-tester.js"></script>
+</body>
+</html>

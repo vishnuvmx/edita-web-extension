@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Coin Flip</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
+
+    .coin-main {
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+
+    .coin-main h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .highlight {
+      color: var(--brand);
+    }
+
+    .tool-section {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #e2ecf7;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .coin-layout {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    .coin-stage {
+      position: relative;
+      min-height: 270px;
+      border-radius: 14px;
+      border: 1px solid #dbe7f3;
+      background:
+        radial-gradient(circle at 24% 15%, rgba(16, 185, 129, 0.15), transparent 44%),
+        linear-gradient(180deg, #fbfdff 0%, #edf5ff 100%);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1100px;
+      padding: 14px;
+    }
+
+    .coin-shadow {
+      position: absolute;
+      width: 120px;
+      height: 30px;
+      border-radius: 999px;
+      background: radial-gradient(ellipse at center, rgba(15, 23, 42, 0.22) 0%, rgba(15, 23, 42, 0.04) 70%, transparent 100%);
+      transform: translateY(110px);
+      filter: blur(1px);
+      transition: transform 0.45s ease, opacity 0.45s ease;
+    }
+
+    .coin-wrap {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      transform-style: preserve-3d;
+    }
+
+    .coin-disc {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+      transition: transform 0.95s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .coin-disc.flipping {
+      animation: flip-spin 1s linear infinite;
+    }
+
+    @keyframes flip-spin {
+      0% {
+        transform: rotateX(0deg) rotateY(0deg);
+      }
+      25% {
+        transform: rotateX(180deg) rotateY(0deg);
+      }
+      50% {
+        transform: rotateX(360deg) rotateY(0deg);
+      }
+      75% {
+        transform: rotateX(540deg) rotateY(180deg);
+      }
+      100% {
+        transform: rotateX(720deg) rotateY(360deg);
+      }
+    }
+
+    .coin-side {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Poppins', 'Inter', 'Segoe UI', sans-serif;
+      font-weight: 800;
+      font-size: 54px;
+      line-height: 1;
+      backface-visibility: hidden;
+    }
+
+    .side-heads {
+      background: transparent;
+      color: #065f46;
+      border: 2px solid rgba(5, 150, 105, 0.3);
+      transform: translateZ(4px);
+    }
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .side-tails {
+      background: linear-gradient(135deg, #10b981 0%, #059669 72%);
+      color: #065f46;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 8px 24px rgba(16, 185, 129, 0.35);
+      border: 2px solid rgba(5, 150, 105, 0.3);
+      transform: rotateY(180deg) translateZ(4px);
+    }
+
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .action-grid button {
+      margin-top: 0;
+      font-family: "Poppins";
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 14px;
+    }
+
+    .cta-primary {
+      box-shadow: 0 12px 24px rgba(16, 185, 129, 0.28);
+    }
+
+    .cta-secondary {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .result-card {
+      border: 1px solid #dbe7f3;
+      border-radius: 12px;
+      background: #f8fbff;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .result-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: baseline;
+      color: #334155;
+      font-size: 13px;
+    }
+
+    .result-value {
+      font-size: 28px;
+      line-height: 1;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #d9e4f1;
+      background: #f8fbff;
+      font-size: 13px;
+    }
+
+    @media (min-width: 580px) {
+      .coin-layout {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card coin-main">
+      <h1>Coin <span class="highlight">Flip</span></h1>
+      <p>Flip a spinning coin and get Heads (H) or Tails (T) with smooth animation and results tracking.</p>
+
+      <div class="tool-section">
+        <span class="section-label">Coin Arena</span>
+        <div class="coin-layout">
+          <div class="coin-stage" aria-label="Coin Flip">
+            <div id="coinShadow" class="coin-shadow"></div>
+            <div class="coin-wrap">
+              <div id="coinDisc" class="coin-disc" aria-hidden="true">
+                <div class="coin-side side-heads">
+                  <img src="../icon/logo-rounded.png" alt="" class="logo-img">
+                </div>
+                <div class="coin-side side-tails"></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="result-card" aria-live="polite">
+              <div class="result-line">
+                <span>Last Flip</span>
+                <strong id="lastResult" class="result-value">H</strong>
+              </div>
+              <div class="result-line">
+                <span>Total Flips</span>
+                <strong id="flipCount">0</strong>
+              </div>
+              <div class="result-line">
+                <span>Heads / Tails</span>
+                <strong id="headsCount">0</strong> / <strong id="tailsCount">0</strong>
+              </div>
+            </div>
+
+            <div class="action-grid">
+              <button id="flipBtn" class="cta-primary" type="button">Flip Coin</button>
+              <button id="resetBtn" class="cta-secondary" type="button">Reset</button>
+            </div>
+
+            <div id="status" class="status" role="status" aria-live="polite">Tap Flip Coin to start.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="tool-base-footer.js"></script>
+  <script src="coin-flip.js"></script>
+</body>
+</html>
