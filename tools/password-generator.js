@@ -8,26 +8,172 @@ const scoreFill = document.getElementById('scoreFill');
 const statusEl = document.getElementById('status');
 const ruleList = document.getElementById('ruleList');
 
-const ELEMENTS = ['H', 'He', 'Li', 'C', 'N', 'O', 'Na', 'Mg', 'Al', 'Si', 'P', 'S', 'Cl', 'K', 'Ca', 'Fe', 'Cu', 'Zn'];
+const ELEMENTS = [
+  'H',
+  'He',
+  'Li',
+  'C',
+  'N',
+  'O',
+  'Na',
+  'Mg',
+  'Al',
+  'Si',
+  'P',
+  'S',
+  'Cl',
+  'K',
+  'Ca',
+  'Fe',
+  'Cu',
+  'Zn',
+];
 const CITIES = [
-  'Paris', 'Tokyo', 'London', 'Sydney', 'Dubai', 'Berlin', 'Toronto', 'Delhi', 'Seoul', 'Madrid',
-  'Mumbai', 'Bengaluru', 'Chennai', 'Kolkata', 'Hyderabad', 'Pune', 'Ahmedabad', 'Jaipur',
-  'Lucknow', 'Surat', 'Kochi', 'Goa', 'Amritsar', 'Varanasi', 'NewYork', 'LosAngeles', 'Chicago',
-  'Houston', 'Phoenix', 'Boston', 'SanDiego', 'Seattle', 'Atlanta', 'Miami', 'MexicoCity',
-  'SaoPaulo', 'BuenosAires', 'Lima', 'Bogota', 'Lisbon', 'Rome', 'Milan', 'Vienna', 'Prague',
-  'Warsaw', 'Budapest', 'Amsterdam', 'Brussels', 'Copenhagen', 'Stockholm', 'Oslo', 'Helsinki',
-  'Istanbul', 'Cairo', 'Nairobi', 'Johannesburg', 'Lagos', 'Riyadh', 'Doha', 'Muscat', 'Tehran',
-  'Bangkok', 'Singapore', 'KualaLumpur', 'Jakarta', 'Manila', 'HongKong', 'Beijing', 'Shanghai',
-  'Shenzhen', 'Taipei', 'Melbourne', 'Auckland'
+  'Paris',
+  'Tokyo',
+  'London',
+  'Sydney',
+  'Dubai',
+  'Berlin',
+  'Toronto',
+  'Delhi',
+  'Seoul',
+  'Madrid',
+  'Mumbai',
+  'Bengaluru',
+  'Chennai',
+  'Kolkata',
+  'Hyderabad',
+  'Pune',
+  'Ahmedabad',
+  'Jaipur',
+  'Lucknow',
+  'Surat',
+  'Kochi',
+  'Goa',
+  'Amritsar',
+  'Varanasi',
+  'NewYork',
+  'LosAngeles',
+  'Chicago',
+  'Houston',
+  'Phoenix',
+  'Boston',
+  'SanDiego',
+  'Seattle',
+  'Atlanta',
+  'Miami',
+  'MexicoCity',
+  'SaoPaulo',
+  'BuenosAires',
+  'Lima',
+  'Bogota',
+  'Lisbon',
+  'Rome',
+  'Milan',
+  'Vienna',
+  'Prague',
+  'Warsaw',
+  'Budapest',
+  'Amsterdam',
+  'Brussels',
+  'Copenhagen',
+  'Stockholm',
+  'Oslo',
+  'Helsinki',
+  'Istanbul',
+  'Cairo',
+  'Nairobi',
+  'Johannesburg',
+  'Lagos',
+  'Riyadh',
+  'Doha',
+  'Muscat',
+  'Tehran',
+  'Bangkok',
+  'Singapore',
+  'KualaLumpur',
+  'Jakarta',
+  'Manila',
+  'HongKong',
+  'Beijing',
+  'Shanghai',
+  'Shenzhen',
+  'Taipei',
+  'Melbourne',
+  'Auckland',
 ];
 const NAMES = [
-  'Alex', 'Emma', 'Noah', 'Mia', 'Liam', 'Aria', 'Ethan', 'Zoe', 'Mason', 'Luna',
-  'Ava', 'Sophia', 'Olivia', 'Amelia', 'Isabella', 'Harper', 'Charlotte', 'Elijah', 'James', 'Lucas',
-  'Benjamin', 'Henry', 'Leo', 'Jack', 'Oscar', 'Aiden', 'Maya', 'Nora', 'Layla', 'Chloe',
-  'Riya', 'Aarav', 'Vihaan', 'Anaya', 'Isha', 'Aditi', 'Kabir', 'Aditya', 'Neha', 'Priya',
-  'Rahul', 'Arjun', 'Karan', 'Rohan', 'Ishan', 'Aryan', 'Ananya', 'Meera', 'Diya', 'Pooja',
-  'Sneha', 'Nikhil', 'Saanvi', 'Tanvi', 'Aisha', 'Fatima', 'Sara', 'Ali', 'Omar', 'Yusuf',
-  'Daniel', 'David', 'Michael', 'Joseph', 'Samuel', 'Anthony', 'Christopher', 'Sofia', 'Elena', 'Ariana'
+  'Alex',
+  'Emma',
+  'Noah',
+  'Mia',
+  'Liam',
+  'Aria',
+  'Ethan',
+  'Zoe',
+  'Mason',
+  'Luna',
+  'Ava',
+  'Sophia',
+  'Olivia',
+  'Amelia',
+  'Isabella',
+  'Harper',
+  'Charlotte',
+  'Elijah',
+  'James',
+  'Lucas',
+  'Benjamin',
+  'Henry',
+  'Leo',
+  'Jack',
+  'Oscar',
+  'Aiden',
+  'Maya',
+  'Nora',
+  'Layla',
+  'Chloe',
+  'Riya',
+  'Aarav',
+  'Vihaan',
+  'Anaya',
+  'Isha',
+  'Aditi',
+  'Kabir',
+  'Aditya',
+  'Neha',
+  'Priya',
+  'Rahul',
+  'Arjun',
+  'Karan',
+  'Rohan',
+  'Ishan',
+  'Aryan',
+  'Ananya',
+  'Meera',
+  'Diya',
+  'Pooja',
+  'Sneha',
+  'Nikhil',
+  'Saanvi',
+  'Tanvi',
+  'Aisha',
+  'Fatima',
+  'Sara',
+  'Ali',
+  'Omar',
+  'Yusuf',
+  'Daniel',
+  'David',
+  'Michael',
+  'Joseph',
+  'Samuel',
+  'Anthony',
+  'Christopher',
+  'Sofia',
+  'Elena',
+  'Ariana',
 ];
 const SYMBOLS = ['!', '@', '#', '$', '%', '&', '*', '+', '?'];
 
@@ -125,8 +271,12 @@ function evaluatePassword(password) {
 
   const hasElement = ELEMENTS.some((element) => normalized.includes(element.toLowerCase()));
   const hasCity = letterTokens.some((token) => fuzzyIncludesToken(token, normalizedCityTokens, 4));
-  const hasKnownName = letterTokens.some((token) => fuzzyIncludesToken(token, normalizedNameTokens, 3));
-  const hasHeuristicName = letterTokens.some((token) => looksLikePersonalName(token) && !fuzzyIncludesToken(token, normalizedCityTokens, 4));
+  const hasKnownName = letterTokens.some((token) =>
+    fuzzyIncludesToken(token, normalizedNameTokens, 3)
+  );
+  const hasHeuristicName = letterTokens.some(
+    (token) => looksLikePersonalName(token) && !fuzzyIncludesToken(token, normalizedCityTokens, 4)
+  );
   const hasName = hasKnownName || hasHeuristicName;
   const digitCount = (password.match(/\d/g) || []).length;
 
@@ -139,7 +289,7 @@ function evaluatePassword(password) {
     element: hasElement,
     city: hasCity,
     name: hasName,
-    noSpace: !/\s/.test(password)
+    noSpace: !/\s/.test(password),
   };
 
   const score = [
@@ -150,7 +300,7 @@ function evaluatePassword(password) {
     results.symbol,
     results.element,
     results.city,
-    results.name
+    results.name,
   ].filter(Boolean).length;
 
   const isStrong = score === 8 && results.noSpace;
@@ -221,11 +371,14 @@ function copyStrongPassword() {
     return;
   }
 
-  navigator.clipboard.writeText(password).then(() => {
-    setStatus('Strong password copied to clipboard.', 'success');
-  }).catch(() => {
-    setStatus('Could not copy password. Please copy manually.', 'error');
-  });
+  navigator.clipboard
+    .writeText(password)
+    .then(() => {
+      setStatus('Strong password copied to clipboard.', 'success');
+    })
+    .catch(() => {
+      setStatus('Could not copy password. Please copy manually.', 'error');
+    });
 }
 
 function clearPassword() {

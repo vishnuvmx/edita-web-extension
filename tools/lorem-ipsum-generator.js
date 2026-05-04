@@ -6,7 +6,7 @@ const loremSentences = [
   'Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
   'Curabitur pretium tincidunt lacus, nulla gravida orci a odio.',
   'Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris.',
-  'Integer in mauris eu nibh euismod gravida.'
+  'Integer in mauris eu nibh euismod gravida.',
 ];
 const loremWords = loremSentences
   .join(' ')
@@ -104,7 +104,9 @@ function initCustomDropdowns() {
   });
 
   document.addEventListener('click', (event) => {
-    const clickedInsideDropdown = dropdownWrappers.some((wrapper) => wrapper.contains(event.target));
+    const clickedInsideDropdown = dropdownWrappers.some((wrapper) =>
+      wrapper.contains(event.target)
+    );
     if (!clickedInsideDropdown) {
       closeAllDropdowns();
     }

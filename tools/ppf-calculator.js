@@ -21,7 +21,7 @@ function toCurrency(value) {
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
-    maximumFractionDigits: 0
+    maximumFractionDigits: 0,
   }).format(value);
 }
 
@@ -43,10 +43,11 @@ function calculatePPF() {
   ppfYearsInput.value = String(Math.round(years));
 
   const totalInvested = annual * years;
-  
+
   // PPF formula: A = P * [((1 + r)^n - 1) / r] * (1 + r)
   const rate_decimal = rate / 100;
-  const maturityValue = annual * (((Math.pow(1 + rate_decimal, years) - 1) / rate_decimal) * (1 + rate_decimal));
+  const maturityValue =
+    annual * (((Math.pow(1 + rate_decimal, years) - 1) / rate_decimal) * (1 + rate_decimal));
   const interest = maturityValue - totalInvested;
 
   ppfInvestedEl.textContent = toCurrency(totalInvested);

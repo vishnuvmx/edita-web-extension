@@ -1,11 +1,13 @@
 const openedTabByWindow = new Map();
 
 function configureSidePanelBehavior() {
-  return chrome.sidePanel.setPanelBehavior({
-    openPanelOnActionClick: false
-  }).catch((error) => {
-    console.error('Unable to set side panel behavior:', error);
-  });
+  return chrome.sidePanel
+    .setPanelBehavior({
+      openPanelOnActionClick: false,
+    })
+    .catch((error) => {
+      console.error('Unable to set side panel behavior:', error);
+    });
 }
 
 async function closeWindowPanel(windowId) {
@@ -37,7 +39,7 @@ async function openPanelForTab(tab) {
   await chrome.sidePanel.setOptions({
     tabId: tab.id,
     path: 'sidepanel.html',
-    enabled: true
+    enabled: true,
   });
 
   await chrome.sidePanel.open({ tabId: tab.id });
@@ -66,5 +68,5 @@ function registerSidePanelActionHandler() {
 
 self.EditaBackgroundBehavior = {
   configureSidePanelBehavior,
-  registerSidePanelActionHandler
+  registerSidePanelActionHandler,
 };

@@ -13,7 +13,7 @@ const ORIENTATIONS = {
   3: { x: -180, y: 0 },
   4: { x: 0, y: -90 },
   5: { x: -90, y: 0 },
-  6: { x: 0, y: 90 }
+  6: { x: 0, y: 90 },
 };
 
 const BASE_TILT_X = -24;

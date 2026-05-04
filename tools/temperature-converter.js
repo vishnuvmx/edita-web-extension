@@ -17,7 +17,7 @@ const UNITS = [
   { value: 'c', label: 'Celsius (°C)' },
   { value: 'f', label: 'Fahrenheit (°F)' },
   { value: 'k', label: 'Kelvin (K)' },
-  { value: 'r', label: 'Rankine (°R)' }
+  { value: 'r', label: 'Rankine (°R)' },
 ];
 
 function setStatus(message, tone = 'neutral') {
@@ -39,19 +39,27 @@ function formatNumber(value) {
 
 function toKelvin(value, unit) {
   switch (unit) {
-    case 'c': return value + 273.15;
-    case 'f': return (value + 459.67) * (5 / 9);
-    case 'r': return value * (5 / 9);
-    default: return value;
+    case 'c':
+      return value + 273.15;
+    case 'f':
+      return (value + 459.67) * (5 / 9);
+    case 'r':
+      return value * (5 / 9);
+    default:
+      return value;
   }
 }
 
 function fromKelvin(value, unit) {
   switch (unit) {
-    case 'c': return value - 273.15;
-    case 'f': return value * (9 / 5) - 459.67;
-    case 'r': return value * (9 / 5);
-    default: return value;
+    case 'c':
+      return value - 273.15;
+    case 'f':
+      return value * (9 / 5) - 459.67;
+    case 'r':
+      return value * (9 / 5);
+    default:
+      return value;
   }
 }
 

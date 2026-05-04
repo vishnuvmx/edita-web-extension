@@ -10,10 +10,16 @@ function cleanText(cleanType) {
 
   switch (cleanType) {
     case 'trim':
-      result = text.split('\n').map(line => line.trim()).join('\n');
+      result = text
+        .split('\n')
+        .map((line) => line.trim())
+        .join('\n');
       break;
     case 'blank':
-      result = text.split('\n').filter(line => line.trim() !== '').join('\n');
+      result = text
+        .split('\n')
+        .filter((line) => line.trim() !== '')
+        .join('\n');
       break;
     case 'extra':
       result = text.replace(/\s+/g, ' ').trim();

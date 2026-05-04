@@ -73,7 +73,13 @@ function calculateIntegral() {
     }
 
     const value = integrateFunction(expression, lowerLimit, upperLimit, steps);
-    updateResult(value, expression, lowerLimit, upperLimit, Math.max(2, Math.trunc(Math.abs(steps))));
+    updateResult(
+      value,
+      expression,
+      lowerLimit,
+      upperLimit,
+      Math.max(2, Math.trunc(Math.abs(steps)))
+    );
     setStatus('Integral calculated successfully.', 'success');
   } catch (error) {
     resultValue.textContent = '-';

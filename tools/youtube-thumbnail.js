@@ -5,18 +5,8 @@ const downloadFhdBtn = document.getElementById('downloadFhdBtn');
 const statusEl = document.getElementById('status');
 
 const QUALITY_SOURCES = {
-  hd: [
-    'hqdefault.jpg',
-    'mqdefault.jpg',
-    'sddefault.jpg',
-    'maxresdefault.jpg'
-  ],
-  fhd: [
-    'maxresdefault.jpg',
-    'sddefault.jpg',
-    'hqdefault.jpg',
-    'mqdefault.jpg'
-  ]
+  hd: ['hqdefault.jpg', 'mqdefault.jpg', 'sddefault.jpg', 'maxresdefault.jpg'],
+  fhd: ['maxresdefault.jpg', 'sddefault.jpg', 'hqdefault.jpg', 'mqdefault.jpg'],
 };
 
 function setStatus(message, tone = 'neutral') {
@@ -58,7 +48,10 @@ function getVideoId(value) {
     const parts = parsed.pathname.split('/').filter(Boolean);
     const maybeId = parts[1] || '';
 
-    if ((parts[0] === 'shorts' || parts[0] === 'embed' || parts[0] === 'live') && /^[a-zA-Z0-9_-]{11}$/.test(maybeId)) {
+    if (
+      (parts[0] === 'shorts' || parts[0] === 'embed' || parts[0] === 'live') &&
+      /^[a-zA-Z0-9_-]{11}$/.test(maybeId)
+    ) {
       return maybeId;
     }
   }
@@ -70,7 +63,11 @@ function isWatchUrl(value) {
   try {
     const parsed = new URL(value.trim());
     const host = parsed.hostname.replace(/^www\./, '');
-    return host.endsWith('youtube.com') && parsed.pathname === '/watch' && /^[a-zA-Z0-9_-]{11}$/.test(parsed.searchParams.get('v') || '');
+    return (
+      host.endsWith('youtube.com') &&
+      parsed.pathname === '/watch' &&
+      /^[a-zA-Z0-9_-]{11}$/.test(parsed.searchParams.get('v') || '')
+    );
   } catch {
     return false;
   }
@@ -136,22 +133,22 @@ async function renderPreview() {
   if (!videoId) {
     downloadHdBtn.disabled = true;
     downloadFhdBtn.disabled = true;
-    setPreviewEmpty('Open the tool from a YouTube watch page or paste a link to preview the thumbnail.');
+    setPreviewEmpty(
+      'Open the tool from a YouTube watch page or paste a link to preview the thumbnail.'
+    );
     return;
   }
 
+  downloadHdBtn.disabled = false;
+  downloadFhdBtn.disabled = false;
   setStatus('Loading thumbnail preview...');
 
   try {
     const image = await loadThumbnail(videoId, 'fhd');
     previewBox.innerHTML = '';
     previewBox.appendChild(image);
-    downloadHdBtn.disabled = false;
-    downloadFhdBtn.disabled = false;
     setStatus('Thumbnail ready.', 'success');
   } catch (error) {
-    downloadHdBtn.disabled = true;
-    downloadFhdBtn.disabled = true;
     setStatus(error.message || 'Unable to load thumbnail preview.', 'error');
     setPreviewEmpty('Preview unavailable for this video.');
   }
@@ -178,28 +175,27 @@ async function downloadThumbnail(quality) {
 
 function downloadFile(url, filename) {
   return new Promise((resolve, reject) => {
-    if (!chrome || !chrome.runtime) {
+    if (!chrome || !chrome.downloads || typeof chrome.downloads.download !== 'function') {
       reject(new Error('Extension API not available'));
       return;
     }
 
-    chrome.runtime.sendMessage({
-      action: 'downloadFile',
-      url,
-      filename
-    }, (response) => {
-      if (chrome.runtime.lastError) {
-        reject(new Error(chrome.runtime.lastError.message));
-        return;
-      }
+    chrome.downloads.download(
+      {
+        url,
+        filename,
+        conflictAction: 'uniquify',
+        saveAs: false,
+      },
+      (downloadId) => {
+        if (chrome.runtime.lastError || typeof downloadId !== 'number') {
+          reject(new Error(chrome.runtime.lastError?.message || 'Download failed'));
+          return;
+        }
 
-      if (!response || !response.success) {
-        reject(new Error(response?.error || 'Download failed'));
-        return;
+        resolve(downloadId);
       }
-
-      resolve(response.downloadId);
-    });
+    );
   });
 }
 
@@ -229,7 +225,9 @@ function initialize() {
   ytInput.value = initialValue;
 
   if (!initialValue) {
-    setPreviewEmpty('Open the tool from a YouTube watch page or paste a link to preview the thumbnail.');
+    setPreviewEmpty(
+      'Open the tool from a YouTube watch page or paste a link to preview the thumbnail.'
+    );
     return;
   }
 

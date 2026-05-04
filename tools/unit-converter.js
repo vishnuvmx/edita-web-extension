@@ -15,16 +15,136 @@ const baseValue = document.getElementById('baseValue');
 const statusEl = document.getElementById('status');
 
 const UNIT_CATEGORIES = {
-  length: { label: 'Length', base: 'm', units: [{ value: 'm', label: 'Meter (m)', factor: 1 }, { value: 'km', label: 'Kilometer (km)', factor: 1000 }, { value: 'cm', label: 'Centimeter (cm)', factor: 0.01 }, { value: 'mm', label: 'Millimeter (mm)', factor: 0.001 }, { value: 'um', label: 'Micrometer (µm)', factor: 0.000001 }, { value: 'mi', label: 'Mile (mi)', factor: 1609.344 }, { value: 'yd', label: 'Yard (yd)', factor: 0.9144 }, { value: 'ft', label: 'Foot (ft)', factor: 0.3048 }, { value: 'in', label: 'Inch (in)', factor: 0.0254 }, { value: 'nmi', label: 'Nautical Mile (nmi)', factor: 1852 }] },
-  mass: { label: 'Mass', base: 'g', units: [{ value: 'g', label: 'Gram (g)', factor: 1 }, { value: 'kg', label: 'Kilogram (kg)', factor: 1000 }, { value: 'mg', label: 'Milligram (mg)', factor: 0.001 }, { value: 't', label: 'Metric Ton (t)', factor: 1000000 }, { value: 'lb', label: 'Pound (lb)', factor: 453.59237 }, { value: 'oz', label: 'Ounce (oz)', factor: 28.349523125 }] },
-  speed: { label: 'Speed', base: 'm/s', units: [{ value: 'mps', label: 'Meter / second (m/s)', factor: 1 }, { value: 'kmh', label: 'Kilometer / hour (km/h)', factor: 1000 / 3600 }, { value: 'mph', label: 'Mile / hour (mph)', factor: 1609.344 / 3600 }, { value: 'fps', label: 'Foot / second (ft/s)', factor: 0.3048 }, { value: 'knot', label: 'Knot', factor: 1852 / 3600 }] },
-  area: { label: 'Area', base: 'm2', units: [{ value: 'm2', label: 'Square Meter (m²)', factor: 1 }, { value: 'km2', label: 'Square Kilometer (km²)', factor: 1000000 }, { value: 'cm2', label: 'Square Centimeter (cm²)', factor: 0.0001 }, { value: 'mm2', label: 'Square Millimeter (mm²)', factor: 0.000001 }, { value: 'ft2', label: 'Square Foot (ft²)', factor: 0.09290304 }, { value: 'yd2', label: 'Square Yard (yd²)', factor: 0.83612736 }, { value: 'acre', label: 'Acre', factor: 4046.8564224 }, { value: 'ha', label: 'Hectare (ha)', factor: 10000 }] },
-  volume: { label: 'Volume', base: 'L', units: [{ value: 'l', label: 'Liter (L)', factor: 1 }, { value: 'ml', label: 'Milliliter (mL)', factor: 0.001 }, { value: 'm3', label: 'Cubic Meter (m³)', factor: 1000 }, { value: 'cm3', label: 'Cubic Centimeter (cm³)', factor: 0.001 }, { value: 'ft3', label: 'Cubic Foot (ft³)', factor: 28.316846592 }, { value: 'in3', label: 'Cubic Inch (in³)', factor: 0.016387064 }, { value: 'gal', label: 'US Gallon', factor: 3.785411784 }, { value: 'qt', label: 'US Quart', factor: 0.946352946 }, { value: 'pt', label: 'US Pint', factor: 0.473176473 }] },
-  pressure: { label: 'Pressure', base: 'Pa', units: [{ value: 'pa', label: 'Pascal (Pa)', factor: 1 }, { value: 'kpa', label: 'Kilopascal (kPa)', factor: 1000 }, { value: 'mpa', label: 'Megapascal (MPa)', factor: 1000000 }, { value: 'bar', label: 'Bar', factor: 100000 }, { value: 'psi', label: 'PSI', factor: 6894.757293168 }, { value: 'atm', label: 'Atmosphere (atm)', factor: 101325 }, { value: 'torr', label: 'Torr', factor: 133.3223684211 }] },
-  energy: { label: 'Energy', base: 'J', units: [{ value: 'j', label: 'Joule (J)', factor: 1 }, { value: 'kj', label: 'Kilojoule (kJ)', factor: 1000 }, { value: 'cal', label: 'Calorie (cal)', factor: 4.184 }, { value: 'kcal', label: 'Kilocalorie (kcal)', factor: 4184 }, { value: 'wh', label: 'Watt-hour (Wh)', factor: 3600 }, { value: 'kwh', label: 'Kilowatt-hour (kWh)', factor: 3600000 }, { value: 'btu', label: 'BTU', factor: 1055.05585262 }] },
-  data: { label: 'Data', base: 'byte', units: [{ value: 'b', label: 'Byte (B)', factor: 1 }, { value: 'kb', label: 'Kilobyte (KB)', factor: 1000 }, { value: 'kib', label: 'Kibibyte (KiB)', factor: 1024 }, { value: 'mb', label: 'Megabyte (MB)', factor: 1000000 }, { value: 'mib', label: 'Mebibyte (MiB)', factor: 1048576 }, { value: 'gb', label: 'Gigabyte (GB)', factor: 1000000000 }, { value: 'gib', label: 'Gibibyte (GiB)', factor: 1073741824 }, { value: 'tb', label: 'Terabyte (TB)', factor: 1000000000000 }, { value: 'tib', label: 'Tebibyte (TiB)', factor: 1099511627776 }] },
-  time: { label: 'Time', base: 's', units: [{ value: 's', label: 'Second (s)', factor: 1 }, { value: 'min', label: 'Minute (min)', factor: 60 }, { value: 'h', label: 'Hour (h)', factor: 3600 }, { value: 'd', label: 'Day (d)', factor: 86400 }, { value: 'wk', label: 'Week (wk)', factor: 604800 }] },
-  force: { label: 'Force', base: 'N', units: [{ value: 'n', label: 'Newton (N)', factor: 1 }, { value: 'kn', label: 'Kilonewton (kN)', factor: 1000 }, { value: 'dyn', label: 'Dyne (dyn)', factor: 0.00001 }, { value: 'lbf', label: 'Pound-force (lbf)', factor: 4.4482216152605 }] }
+  length: {
+    label: 'Length',
+    base: 'm',
+    units: [
+      { value: 'm', label: 'Meter (m)', factor: 1 },
+      { value: 'km', label: 'Kilometer (km)', factor: 1000 },
+      { value: 'cm', label: 'Centimeter (cm)', factor: 0.01 },
+      { value: 'mm', label: 'Millimeter (mm)', factor: 0.001 },
+      { value: 'um', label: 'Micrometer (µm)', factor: 0.000001 },
+      { value: 'mi', label: 'Mile (mi)', factor: 1609.344 },
+      { value: 'yd', label: 'Yard (yd)', factor: 0.9144 },
+      { value: 'ft', label: 'Foot (ft)', factor: 0.3048 },
+      { value: 'in', label: 'Inch (in)', factor: 0.0254 },
+      { value: 'nmi', label: 'Nautical Mile (nmi)', factor: 1852 },
+    ],
+  },
+  mass: {
+    label: 'Mass',
+    base: 'g',
+    units: [
+      { value: 'g', label: 'Gram (g)', factor: 1 },
+      { value: 'kg', label: 'Kilogram (kg)', factor: 1000 },
+      { value: 'mg', label: 'Milligram (mg)', factor: 0.001 },
+      { value: 't', label: 'Metric Ton (t)', factor: 1000000 },
+      { value: 'lb', label: 'Pound (lb)', factor: 453.59237 },
+      { value: 'oz', label: 'Ounce (oz)', factor: 28.349523125 },
+    ],
+  },
+  speed: {
+    label: 'Speed',
+    base: 'm/s',
+    units: [
+      { value: 'mps', label: 'Meter / second (m/s)', factor: 1 },
+      { value: 'kmh', label: 'Kilometer / hour (km/h)', factor: 1000 / 3600 },
+      { value: 'mph', label: 'Mile / hour (mph)', factor: 1609.344 / 3600 },
+      { value: 'fps', label: 'Foot / second (ft/s)', factor: 0.3048 },
+      { value: 'knot', label: 'Knot', factor: 1852 / 3600 },
+    ],
+  },
+  area: {
+    label: 'Area',
+    base: 'm2',
+    units: [
+      { value: 'm2', label: 'Square Meter (m²)', factor: 1 },
+      { value: 'km2', label: 'Square Kilometer (km²)', factor: 1000000 },
+      { value: 'cm2', label: 'Square Centimeter (cm²)', factor: 0.0001 },
+      { value: 'mm2', label: 'Square Millimeter (mm²)', factor: 0.000001 },
+      { value: 'ft2', label: 'Square Foot (ft²)', factor: 0.09290304 },
+      { value: 'yd2', label: 'Square Yard (yd²)', factor: 0.83612736 },
+      { value: 'acre', label: 'Acre', factor: 4046.8564224 },
+      { value: 'ha', label: 'Hectare (ha)', factor: 10000 },
+    ],
+  },
+  volume: {
+    label: 'Volume',
+    base: 'L',
+    units: [
+      { value: 'l', label: 'Liter (L)', factor: 1 },
+      { value: 'ml', label: 'Milliliter (mL)', factor: 0.001 },
+      { value: 'm3', label: 'Cubic Meter (m³)', factor: 1000 },
+      { value: 'cm3', label: 'Cubic Centimeter (cm³)', factor: 0.001 },
+      { value: 'ft3', label: 'Cubic Foot (ft³)', factor: 28.316846592 },
+      { value: 'in3', label: 'Cubic Inch (in³)', factor: 0.016387064 },
+      { value: 'gal', label: 'US Gallon', factor: 3.785411784 },
+      { value: 'qt', label: 'US Quart', factor: 0.946352946 },
+      { value: 'pt', label: 'US Pint', factor: 0.473176473 },
+    ],
+  },
+  pressure: {
+    label: 'Pressure',
+    base: 'Pa',
+    units: [
+      { value: 'pa', label: 'Pascal (Pa)', factor: 1 },
+      { value: 'kpa', label: 'Kilopascal (kPa)', factor: 1000 },
+      { value: 'mpa', label: 'Megapascal (MPa)', factor: 1000000 },
+      { value: 'bar', label: 'Bar', factor: 100000 },
+      { value: 'psi', label: 'PSI', factor: 6894.757293168 },
+      { value: 'atm', label: 'Atmosphere (atm)', factor: 101325 },
+      { value: 'torr', label: 'Torr', factor: 133.3223684211 },
+    ],
+  },
+  energy: {
+    label: 'Energy',
+    base: 'J',
+    units: [
+      { value: 'j', label: 'Joule (J)', factor: 1 },
+      { value: 'kj', label: 'Kilojoule (kJ)', factor: 1000 },
+      { value: 'cal', label: 'Calorie (cal)', factor: 4.184 },
+      { value: 'kcal', label: 'Kilocalorie (kcal)', factor: 4184 },
+      { value: 'wh', label: 'Watt-hour (Wh)', factor: 3600 },
+      { value: 'kwh', label: 'Kilowatt-hour (kWh)', factor: 3600000 },
+      { value: 'btu', label: 'BTU', factor: 1055.05585262 },
+    ],
+  },
+  data: {
+    label: 'Data',
+    base: 'byte',
+    units: [
+      { value: 'b', label: 'Byte (B)', factor: 1 },
+      { value: 'kb', label: 'Kilobyte (KB)', factor: 1000 },
+      { value: 'kib', label: 'Kibibyte (KiB)', factor: 1024 },
+      { value: 'mb', label: 'Megabyte (MB)', factor: 1000000 },
+      { value: 'mib', label: 'Mebibyte (MiB)', factor: 1048576 },
+      { value: 'gb', label: 'Gigabyte (GB)', factor: 1000000000 },
+      { value: 'gib', label: 'Gibibyte (GiB)', factor: 1073741824 },
+      { value: 'tb', label: 'Terabyte (TB)', factor: 1000000000000 },
+      { value: 'tib', label: 'Tebibyte (TiB)', factor: 1099511627776 },
+    ],
+  },
+  time: {
+    label: 'Time',
+    base: 's',
+    units: [
+      { value: 's', label: 'Second (s)', factor: 1 },
+      { value: 'min', label: 'Minute (min)', factor: 60 },
+      { value: 'h', label: 'Hour (h)', factor: 3600 },
+      { value: 'd', label: 'Day (d)', factor: 86400 },
+      { value: 'wk', label: 'Week (wk)', factor: 604800 },
+    ],
+  },
+  force: {
+    label: 'Force',
+    base: 'N',
+    units: [
+      { value: 'n', label: 'Newton (N)', factor: 1 },
+      { value: 'kn', label: 'Kilonewton (kN)', factor: 1000 },
+      { value: 'dyn', label: 'Dyne (dyn)', factor: 0.00001 },
+      { value: 'lbf', label: 'Pound-force (lbf)', factor: 4.4482216152605 },
+    ],
+  },
 };
 
 function setStatus(message, tone = 'neutral') {
@@ -40,8 +160,14 @@ function formatNumber(value) {
   if (!Number.isFinite(value)) {
     return '-';
   }
-  const text = Math.abs(value) >= 1000000 || (Math.abs(value) > 0 && Math.abs(value) < 0.000001) ? value.toExponential(6) : value.toFixed(6);
-  return text.replace(/\.0+([eE]|$)/, '$1').replace(/(\.\d*?[1-9])0+([eE]|$)/, '$1$2').replace(/\.0+$/, '');
+  const text =
+    Math.abs(value) >= 1000000 || (Math.abs(value) > 0 && Math.abs(value) < 0.000001)
+      ? value.toExponential(6)
+      : value.toFixed(6);
+  return text
+    .replace(/\.0+([eE]|$)/, '$1')
+    .replace(/(\.\d*?[1-9])0+([eE]|$)/, '$1$2')
+    .replace(/\.0+$/, '');
 }
 
 function getCategory() {
@@ -174,7 +300,10 @@ convertBtn.addEventListener('click', convertValue);
 swapBtn.addEventListener('click', swapUnits);
 copyBtn.addEventListener('click', copyResult);
 resetBtn.addEventListener('click', resetConverter);
-categorySelect.addEventListener('change', () => { populateUnits(false); convertValue(); });
+categorySelect.addEventListener('change', () => {
+  populateUnits(false);
+  convertValue();
+});
 valueInput.addEventListener('input', convertValue);
 fromUnit.addEventListener('change', convertValue);
 toUnit.addEventListener('change', convertValue);

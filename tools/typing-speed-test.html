@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Typing Speed Test</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .typing-main {
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+
+    .typing-main h1 {
+      font-size: 40px;
+      line-height: 1.12;
+      margin-bottom: 10px;
+    }
+
+    .accent {
+      color: var(--brand);
+    }
+
+    .tool-section {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #e2ecf7;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+      margin-bottom: 14px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .prompt-box {
+      border: 1px solid #dbe7f3;
+      border-radius: 12px;
+      padding: 12px;
+      background: #ffffff;
+      color: #334155;
+      line-height: 1.7;
+      font-size: 15px;
+      min-height: 122px;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .prompt-char {
+      border-radius: 4px;
+      padding: 1px 0;
+    }
+
+    .prompt-char.correct {
+      color: #047857;
+      background: rgba(16, 185, 129, 0.14);
+    }
+
+    .prompt-char.incorrect {
+      color: #b91c1c;
+      background: rgba(239, 68, 68, 0.14);
+    }
+
+    .prompt-char.current {
+      background: rgba(59, 130, 246, 0.18);
+      box-shadow: inset 0 -1px 0 rgba(37, 99, 235, 0.55);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 130px;
+      resize: vertical;
+      border: 1px solid #d0dbe8;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      line-height: 1.55;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .actions button {
+      margin-top: 0;
+      font-family: "Poppins";
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 10px;
+    }
+
+    .secondary {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .stat-card {
+      border: 1px solid #dbe7f3;
+      border-radius: 12px;
+      background: #f8fbff;
+      padding: 10px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .stat-value {
+      font-family: "Bricolage Grotesque", "Segoe UI", sans-serif;
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .stat-value.small {
+      font-size: 19px;
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #d9e4f1;
+      background: #f8fbff;
+      font-size: 13px;
+    }
+
+    @media (max-width: 560px) {
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card typing-main">
+      <h1>Typing Speed <span class="accent">Test</span></h1>
+      <p>Type the shown text, track your speed and finish time in minute:second:millisecond precision.</p>
+
+      <div class="tool-section">
+        <span class="section-label">Prompt Setup</span>
+        <div class="row">
+          <div>
+            <label for="promptMode">Text Mode</label>
+            <select id="promptMode">
+              <option value="quick">Quick Brown Sentence</option>
+              <option value="famous">Famous Paragraphs</option>
+            </select>
+          </div>
+          <div class="prompt-box" id="promptBox" aria-live="polite"></div>
+          <div>
+            <label for="typingInput">Start typing here</label>
+            <textarea id="typingInput" placeholder="Click Start New Test, then type the prompt exactly..."></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="startBtn" type="button">Start New Test</button>
+          <button id="shuffleBtn" class="secondary" type="button">Shuffle Prompt</button>
+          <button id="resetBtn" class="secondary" type="button">Reset Input</button>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <span class="section-label">Live Stats</span>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Completion Time</div>
+            <div class="stat-value small" id="completionTime">00:00:000</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Gross WPM</div>
+            <div class="stat-value" id="grossWpm">0.00</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Net WPM</div>
+            <div class="stat-value" id="netWpm">0.00</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Accuracy</div>
+            <div class="stat-value" id="accuracy">100.00%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Characters Per Min</div>
+            <div class="stat-value" id="cpm">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Progress</div>
+            <div class="stat-value" id="progress">0.00%</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script src="tool-base-footer.js"></script>
+  <script src="typing-speed-test.js"></script>
+</body>
+</html>

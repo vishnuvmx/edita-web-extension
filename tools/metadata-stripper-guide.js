@@ -18,8 +18,8 @@ const state = {
     shutter: false,
     focal: false,
     focus: false,
-    location: false
-  }
+    location: false,
+  },
 };
 
 const textDecoder = new TextDecoder('utf-8', { fatal: false });
@@ -30,7 +30,7 @@ function resetSensitiveMetadata() {
     shutter: false,
     focal: false,
     focus: false,
-    location: false
+    location: false,
   };
 }
 
@@ -52,7 +52,12 @@ function flagSensitiveFromKeywordBlob(text) {
   if (normalized.includes('focus') || normalized.includes('subjectdistance')) {
     state.sensitiveMetadata.focus = true;
   }
-  if (normalized.includes('gps') || normalized.includes('latitude') || normalized.includes('longitude') || normalized.includes('location')) {
+  if (
+    normalized.includes('gps') ||
+    normalized.includes('latitude') ||
+    normalized.includes('longitude') ||
+    normalized.includes('location')
+  ) {
     state.sensitiveMetadata.location = true;
   }
 }
@@ -84,10 +89,10 @@ function applyExifTagSignal(tag, inGpsIfd) {
   if (tag === 0x8827) {
     state.sensitiveMetadata.iso = true;
   }
-  if (tag === 0x829A || tag === 0x9201) {
+  if (tag === 0x829a || tag === 0x9201) {
     state.sensitiveMetadata.shutter = true;
   }
-  if (tag === 0x920A) {
+  if (tag === 0x920a) {
     state.sensitiveMetadata.focal = true;
   }
   if (tag === 0x9206) {
@@ -115,7 +120,7 @@ function parseExifIfd(view, tiffStart, ifdOffset, littleEndian, visited, inGpsIf
   let gpsSubIfdOffset = null;
 
   for (let index = 0; index < entryCount; index += 1) {
-    const entryOffset = ifdAbsolute + 2 + (index * 12);
+    const entryOffset = ifdAbsolute + 2 + index * 12;
     const tag = getUint16(view, entryOffset, littleEndian);
     if (!Number.isFinite(tag)) {
       break;
@@ -132,7 +137,7 @@ function parseExifIfd(view, tiffStart, ifdOffset, littleEndian, visited, inGpsIf
     }
   }
 
-  const nextIfdOffset = getUint32(view, ifdAbsolute + 2 + (entryCount * 12), littleEndian);
+  const nextIfdOffset = getUint32(view, ifdAbsolute + 2 + entryCount * 12, littleEndian);
 
   if (Number.isFinite(exifSubIfdOffset) && exifSubIfdOffset > 0) {
     parseExifIfd(view, tiffStart, exifSubIfdOffset, littleEndian, visited, false);
@@ -155,7 +160,7 @@ function inspectExifTiff(view, tiffStart) {
   const byte0 = view.getUint8(tiffStart);
   const byte1 = view.getUint8(tiffStart + 1);
   const littleEndian = byte0 === 0x49 && byte1 === 0x49;
-  const bigEndian = byte0 === 0x4D && byte1 === 0x4D;
+  const bigEndian = byte0 === 0x4d && byte1 === 0x4d;
 
   if (!littleEndian && !bigEndian) {
     return;
@@ -174,18 +179,18 @@ function inspectExifTiff(view, tiffStart) {
 
 function inspectJpegSensitiveMetadata(buffer) {
   const bytes = new Uint8Array(buffer);
-  if (bytes.length < 4 || bytes[0] !== 0xFF || bytes[1] !== 0xD8) {
+  if (bytes.length < 4 || bytes[0] !== 0xff || bytes[1] !== 0xd8) {
     return;
   }
 
   let offset = 2;
   while (offset + 4 <= bytes.length) {
-    if (bytes[offset] !== 0xFF) {
+    if (bytes[offset] !== 0xff) {
       break;
     }
 
     const marker = bytes[offset + 1];
-    if (marker === 0xDA || marker === 0xD9) {
+    if (marker === 0xda || marker === 0xd9) {
       break;
     }
 
@@ -201,7 +206,7 @@ function inspectJpegSensitiveMetadata(buffer) {
     }
 
     if (
-      marker === 0xE1 &&
+      marker === 0xe1 &&
       segmentLength > 8 &&
       bytes[segmentStart] === 0x45 &&
       bytes[segmentStart + 1] === 0x78 &&
@@ -219,7 +224,7 @@ function inspectJpegSensitiveMetadata(buffer) {
 
 function inspectPngSensitiveMetadata(buffer) {
   const bytes = new Uint8Array(buffer);
-  const pngSignature = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A];
+  const pngSignature = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a];
 
   if (bytes.length < 8 || !pngSignature.every((value, index) => bytes[index] === value)) {
     return;
@@ -227,12 +232,12 @@ function inspectPngSensitiveMetadata(buffer) {
 
   let offset = 8;
   while (offset + 12 <= bytes.length) {
-    const length = (
-      (bytes[offset] << 24) |
-      (bytes[offset + 1] << 16) |
-      (bytes[offset + 2] << 8) |
-      bytes[offset + 3]
-    ) >>> 0;
+    const length =
+      ((bytes[offset] << 24) |
+        (bytes[offset + 1] << 16) |
+        (bytes[offset + 2] << 8) |
+        bytes[offset + 3]) >>>
+      0;
 
     const typeOffset = offset + 4;
     const dataOffset = offset + 8;
@@ -336,10 +341,7 @@ async function onSelectImage() {
   }
 
   try {
-    const [loadResult, binaryBuffer] = await Promise.all([
-      loadImage(file),
-      readArrayBuffer(file)
-    ]);
+    const [loadResult, binaryBuffer] = await Promise.all([loadImage(file), readArrayBuffer(file)]);
     const { image, url } = loadResult;
 
     if (state.imageUrl) {
@@ -360,13 +362,16 @@ async function onSelectImage() {
       `Type: ${file.type || 'Unknown'}`,
       `Size: ${bytesToReadable(file.size)}`,
       `Dimensions: ${image.naturalWidth} x ${image.naturalHeight} px`,
-      `Last Modified: ${new Date(file.lastModified).toLocaleString()}`
+      `Last Modified: ${new Date(file.lastModified).toLocaleString()}`,
     ]);
 
     inspectSensitiveMetadata(binaryBuffer, file);
 
     if (hasSensitiveMetadata()) {
-      setStatus('Sensitive camera/location metadata detected. Export will strip it without exposing values.', 'success');
+      setStatus(
+        'Sensitive camera/location metadata detected. Export will strip it without exposing values.',
+        'success'
+      );
     } else {
       setStatus('Image loaded. You can now export a cleaned copy.', 'success');
     }
@@ -377,13 +382,17 @@ async function onSelectImage() {
 
 function canvasToBlob(canvas, type, quality) {
   return new Promise((resolve, reject) => {
-    canvas.toBlob((blob) => {
-      if (!blob) {
-        reject(new Error('Failed to build output file.'));
-        return;
-      }
-      resolve(blob);
-    }, type, quality);
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) {
+          reject(new Error('Failed to build output file.'));
+          return;
+        }
+        resolve(blob);
+      },
+      type,
+      quality
+    );
   });
 }
 
@@ -426,7 +435,10 @@ async function stripAndDownload() {
     anchor.remove();
 
     URL.revokeObjectURL(outputUrl);
-    setStatus('Cleaned image downloaded. ISO, shutter, focal/focus, and location metadata are removed when present.', 'success');
+    setStatus(
+      'Cleaned image downloaded. ISO, shutter, focal/focus, and location metadata are removed when present.',
+      'success'
+    );
   } catch (error) {
     setStatus(error.message || 'Could not export clean image.', 'error');
   }
@@ -448,13 +460,7 @@ function clearAll() {
   previewImage.style.display = 'none';
   emptyState.style.display = 'block';
 
-  updateMetaRows([
-    'Name: -',
-    'Type: -',
-    'Size: -',
-    'Dimensions: -',
-    'Last Modified: -'
-  ]);
+  updateMetaRows(['Name: -', 'Type: -', 'Size: -', 'Dimensions: -', 'Last Modified: -']);
 
   setStatus('Cleared. Select another image to continue.');
 }

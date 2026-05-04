@@ -95,7 +95,10 @@ uppercaseToggle.addEventListener('change', () => {
   if (!output.value.trim()) {
     return;
   }
-  output.value = output.value.split(/\r?\n/).map((line) => formatUuid(line.trim().toLowerCase())).join('\n');
+  output.value = output.value
+    .split(/\r?\n/)
+    .map((line) => formatUuid(line.trim().toLowerCase()))
+    .join('\n');
 });
 
 hyphenToggle.addEventListener('change', () => {

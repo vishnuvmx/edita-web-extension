@@ -90,14 +90,12 @@
     const tokens = tokenize(cleaned);
     let position = 0;
 
-    const log10 = Math.log10
-      ? Math.log10
-      : (value) => Math.log(value) / Math.LN10;
+    const log10 = Math.log10 ? Math.log10 : (value) => Math.log(value) / Math.LN10;
 
     const constants = {
       x: xValue,
       pi: Math.PI,
-      e: Math.E
+      e: Math.E,
     };
 
     const functions = {
@@ -192,7 +190,7 @@
       sign: (args) => {
         ensureArgCount('sign', args, 1);
         return Math.sign(args[0]);
-      }
+      },
     };
 
     function ensureArgCount(name, args, expectedCount) {
@@ -363,6 +361,6 @@
 
   global.MathExpressionUtils = {
     evaluateMathExpression,
-    formatMathValue
+    formatMathValue,
   };
 })(window);

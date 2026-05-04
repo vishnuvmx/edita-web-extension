@@ -17,7 +17,7 @@ const BASE_LABELS = {
   2: 'Binary',
   8: 'Octal',
   10: 'Decimal',
-  16: 'Hexadecimal'
+  16: 'Hexadecimal',
 };
 
 function setStatus(message, tone = 'neutral') {
@@ -61,7 +61,7 @@ function parseBaseValue(value, base) {
     2: /^0b/i,
     8: /^0o/i,
     10: /^0d/i,
-    16: /^0x/i
+    16: /^0x/i,
   };
 
   digits = digits.replace(prefixes[base], '');
@@ -73,7 +73,7 @@ function parseBaseValue(value, base) {
     2: /^[01]+$/,
     8: /^[0-7]+$/,
     10: /^[0-9]+$/,
-    16: /^[0-9a-f]+$/
+    16: /^[0-9a-f]+$/,
   };
 
   if (!validDigits[base].test(digits)) {
@@ -127,7 +127,9 @@ function syncDropdownUI(wrapper) {
     : null;
 
   if (valueEl) {
-    valueEl.textContent = selectedOption ? selectedOption.textContent : BASE_LABELS[normalizeBase(select.value)];
+    valueEl.textContent = selectedOption
+      ? selectedOption.textContent
+      : BASE_LABELS[normalizeBase(select.value)];
   }
 
   options.forEach((option) => {
@@ -197,7 +199,9 @@ function initCustomDropdowns() {
   });
 
   document.addEventListener('click', (event) => {
-    const clickedInsideDropdown = dropdownWrappers.some((wrapper) => wrapper.contains(event.target));
+    const clickedInsideDropdown = dropdownWrappers.some((wrapper) =>
+      wrapper.contains(event.target)
+    );
     if (!clickedInsideDropdown) {
       closeAllDropdowns();
     }

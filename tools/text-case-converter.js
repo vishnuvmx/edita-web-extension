@@ -15,10 +15,15 @@ function convertCase(caseType) {
       result = text.toLowerCase();
       break;
     case 'title':
-      result = text.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+      result = text.replace(
+        /\w\S*/g,
+        (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
+      );
       break;
     case 'sentence':
-      result = text.toLowerCase().replace(/[.!?]\s*([a-z])/g, (match, char) => match[0] + ' ' + char.toUpperCase());
+      result = text
+        .toLowerCase()
+        .replace(/[.!?]\s*([a-z])/g, (match, char) => match[0] + ' ' + char.toUpperCase());
       result = result.charAt(0).toUpperCase() + result.slice(1);
       break;
   }
@@ -39,4 +44,3 @@ caseButtons.forEach((button) => {
 });
 
 copyBtn.addEventListener('click', copyOutput);
-

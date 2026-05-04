@@ -30,7 +30,7 @@ const state = {
   outputWidth: 0,
   outputHeight: 0,
   outputFormat: 'image/jpeg',
-  outputQuality: 0.9
+  outputQuality: 0.9,
 };
 
 function setStatus(message, tone = 'neutral') {
@@ -182,13 +182,17 @@ function drawResizedImage(canvas, image, targetWidth, targetHeight) {
 
 function canvasToBlob(canvas, mimeType, quality) {
   return new Promise((resolve, reject) => {
-    canvas.toBlob((blob) => {
-      if (!blob) {
-        reject(new Error('Unable to generate output image.'));
-        return;
-      }
-      resolve(blob);
-    }, mimeType, quality);
+    canvas.toBlob(
+      (blob) => {
+        if (!blob) {
+          reject(new Error('Unable to generate output image.'));
+          return;
+        }
+        resolve(blob);
+      },
+      mimeType,
+      quality
+    );
   });
 }
 
@@ -200,7 +204,7 @@ async function exportWithTargetSize(canvas, mimeType, maxQuality, targetKb) {
     return {
       blob,
       quality: null,
-      warning: 'Target size works best with JPEG/WEBP. PNG output uses fixed compression.'
+      warning: 'Target size works best with JPEG/WEBP. PNG output uses fixed compression.',
     };
   }
 
@@ -234,7 +238,8 @@ async function exportWithTargetSize(canvas, mimeType, maxQuality, targetKb) {
 
   let warning = '';
   if (bestBlob.size > targetBytes) {
-    warning = 'Could not fully meet target size with current dimensions; lowered quality as much as possible.';
+    warning =
+      'Could not fully meet target size with current dimensions; lowered quality as much as possible.';
   }
 
   return { blob: bestBlob, quality: bestQuality, warning };
@@ -321,7 +326,8 @@ function downloadImage() {
     return;
   }
 
-  const originalName = state.file && state.file.name ? state.file.name.replace(/\.[^.]+$/, '') : 'image';
+  const originalName =
+    state.file && state.file.name ? state.file.name.replace(/\.[^.]+$/, '') : 'image';
   const extension = getOutputExtension(state.outputFormat);
   const filename = `${originalName}-${state.outputWidth}x${state.outputHeight}.${extension}`;
 

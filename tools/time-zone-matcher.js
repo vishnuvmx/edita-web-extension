@@ -17,7 +17,7 @@ const LOCATIONS = [
   { label: 'United States - New York', zone: 'America/New_York' },
   { label: 'United States - Los Angeles', zone: 'America/Los_Angeles' },
   { label: 'Canada - Toronto', zone: 'America/Toronto' },
-  { label: 'Brazil - Sao Paulo', zone: 'America/Sao_Paulo' }
+  { label: 'Brazil - Sao Paulo', zone: 'America/Sao_Paulo' },
 ];
 
 function setStatus(message, tone = 'neutral') {
@@ -35,7 +35,7 @@ function toGmtLabel(timeZone) {
     timeZone,
     timeZoneName: 'shortOffset',
     hour: '2-digit',
-    minute: '2-digit'
+    minute: '2-digit',
   });
 
   const parts = formatter.formatToParts(now);
@@ -68,7 +68,7 @@ function gmtLabelToMinutes(label) {
   const sign = match[1] === '+' ? 1 : -1;
   const hours = Number.parseInt(match[2], 10);
   const minutes = Number.parseInt(match[3], 10);
-  return sign * ((hours * 60) + minutes);
+  return sign * (hours * 60 + minutes);
 }
 
 function formatDifference(targetMinutes, localMinutes) {
@@ -91,7 +91,7 @@ function formatTimeForZone(timeZone) {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
-    weekday: 'short'
+    weekday: 'short',
   }).format(new Date());
 }
 
@@ -137,7 +137,7 @@ function getSelectedLocations() {
   const checkboxes = timezoneListEl.querySelectorAll('input[type="checkbox"]:checked');
   return Array.from(checkboxes).map((checkbox) => ({
     zone: checkbox.value,
-    label: checkbox.dataset.label || checkbox.value
+    label: checkbox.dataset.label || checkbox.value,
   }));
 }
 

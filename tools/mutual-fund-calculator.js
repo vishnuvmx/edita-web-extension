@@ -21,7 +21,7 @@ function toCurrency(value) {
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
-    maximumFractionDigits: 0
+    maximumFractionDigits: 0,
   }).format(value);
 }
 
@@ -51,7 +51,8 @@ function calculateMF() {
   if (monthlyRate === 0) {
     finalValue = totalInvested;
   } else {
-    finalValue = investment * (((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate));
+    finalValue =
+      investment * (((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate));
   }
 
   const gains = finalValue - totalInvested;

@@ -208,7 +208,10 @@
 
   if (!window.__editaSelectValuePatched) {
     const valueDescriptor = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'value');
-    const selectedIndexDescriptor = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, 'selectedIndex');
+    const selectedIndexDescriptor = Object.getOwnPropertyDescriptor(
+      HTMLSelectElement.prototype,
+      'selectedIndex'
+    );
 
     if (valueDescriptor && valueDescriptor.configurable) {
       Object.defineProperty(HTMLSelectElement.prototype, 'value', {
@@ -222,7 +225,7 @@
               syncDropdownUI(this);
             }
           });
-        }
+        },
       });
     }
 
@@ -238,7 +241,7 @@
               syncDropdownUI(this);
             }
           });
-        }
+        },
       });
     }
 

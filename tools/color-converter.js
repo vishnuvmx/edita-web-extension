@@ -76,7 +76,7 @@ function rgbToHsl(rgb) {
   return {
     h: hue,
     s: Math.round(saturation * 100),
-    l: Math.round(lightness * 100)
+    l: Math.round(lightness * 100),
   };
 }
 
@@ -116,14 +116,18 @@ function hslToRgb(hsl) {
   return {
     r: round((red + match) * 255),
     g: round((green + match) * 255),
-    b: round((blue + match) * 255)
+    b: round((blue + match) * 255),
   };
 }
 
 function normalizeHex(hex) {
   const clean = hex.trim().replace(/^#/, '');
   if (/^[0-9a-f]{3}$/i.test(clean)) {
-    return clean.split('').map((char) => char + char).join('').toUpperCase();
+    return clean
+      .split('')
+      .map((char) => char + char)
+      .join('')
+      .toUpperCase();
   }
 
   if (/^[0-9a-f]{6}$/i.test(clean)) {
@@ -147,10 +151,14 @@ function parseNumberToken(token) {
 }
 
 function parseRgb(value) {
-  const inner = value.trim().replace(/^rgba?\(/i, '').replace(/\)$/,'');
-  const parts = inner.split('/')[0].split(',').length > 1
-    ? inner.split('/')[0].split(',')
-    : inner.split('/')[0].trim().split(/\s+/);
+  const inner = value
+    .trim()
+    .replace(/^rgba?\(/i, '')
+    .replace(/\)$/, '');
+  const parts =
+    inner.split('/')[0].split(',').length > 1
+      ? inner.split('/')[0].split(',')
+      : inner.split('/')[0].trim().split(/\s+/);
 
   if (parts.length < 3) {
     throw new Error('Enter a valid RGB color.');
@@ -170,15 +178,19 @@ function parseRgb(value) {
   return {
     r: round(convert(red)),
     g: round(convert(green)),
-    b: round(convert(blue))
+    b: round(convert(blue)),
   };
 }
 
 function parseHsl(value) {
-  const inner = value.trim().replace(/^hsla?\(/i, '').replace(/\)$/,'');
-  const parts = inner.split('/')[0].split(',').length > 1
-    ? inner.split('/')[0].split(',')
-    : inner.split('/')[0].trim().split(/\s+/);
+  const inner = value
+    .trim()
+    .replace(/^hsla?\(/i, '')
+    .replace(/\)$/, '');
+  const parts =
+    inner.split('/')[0].split(',').length > 1
+      ? inner.split('/')[0].split(',')
+      : inner.split('/')[0].trim().split(/\s+/);
 
   if (parts.length < 3) {
     throw new Error('Enter a valid HSL color.');
@@ -195,7 +207,7 @@ function parseHsl(value) {
   return hslToRgb({
     h: hue,
     s: saturation.value,
-    l: lightness.value
+    l: lightness.value,
   });
 }
 
@@ -213,8 +225,8 @@ function parseColor(value) {
       rgb: {
         r: Number.parseInt(hex.slice(0, 2), 16),
         g: Number.parseInt(hex.slice(2, 4), 16),
-        b: Number.parseInt(hex.slice(4, 6), 16)
-      }
+        b: Number.parseInt(hex.slice(4, 6), 16),
+      },
     };
   }
 

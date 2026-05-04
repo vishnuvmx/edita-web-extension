@@ -70,8 +70,8 @@ function updatePreview() {
   const scaleX = imageRect.width / state.image.naturalWidth;
   const scaleY = imageRect.height / state.image.naturalHeight;
   cropOverlay.style.display = 'block';
-  cropOverlay.style.left = `${(imageRect.left - stageRect.left) + (state.crop.x * scaleX)}px`;
-  cropOverlay.style.top = `${(imageRect.top - stageRect.top) + (state.crop.y * scaleY)}px`;
+  cropOverlay.style.left = `${imageRect.left - stageRect.left + state.crop.x * scaleX}px`;
+  cropOverlay.style.top = `${imageRect.top - stageRect.top + state.crop.y * scaleY}px`;
   cropOverlay.style.width = `${state.crop.width * scaleX}px`;
   cropOverlay.style.height = `${state.crop.height * scaleY}px`;
 }
@@ -231,7 +231,17 @@ async function cropImage() {
   canvas.width = state.crop.width;
   canvas.height = state.crop.height;
   const context = canvas.getContext('2d');
-  context.drawImage(state.image, state.crop.x, state.crop.y, state.crop.width, state.crop.height, 0, 0, state.crop.width, state.crop.height);
+  context.drawImage(
+    state.image,
+    state.crop.x,
+    state.crop.y,
+    state.crop.width,
+    state.crop.height,
+    0,
+    0,
+    state.crop.width,
+    state.crop.height
+  );
 
   const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
   if (!blob) {
@@ -266,7 +276,9 @@ function downloadCrop() {
 
 imageInput.addEventListener('change', onFileSelected);
 aspectSelect.addEventListener('change', applyAspectPreset);
-[xInput, yInput, widthInput, heightInput].forEach((input) => input.addEventListener('input', readCropFromInputs));
+[xInput, yInput, widthInput, heightInput].forEach((input) =>
+  input.addEventListener('input', readCropFromInputs)
+);
 sourceImage.addEventListener('load', updatePreview);
 centerBtn.addEventListener('click', centerCurrentCrop);
 cropBtn.addEventListener('click', cropImage);

@@ -11,7 +11,7 @@ const exampleButtons = Array.from(document.querySelectorAll('[data-example]'));
 const pads = {
   basic: document.getElementById('padBasic'),
   math: document.getElementById('padMath'),
-  advanced: document.getElementById('padAdvanced')
+  advanced: document.getElementById('padAdvanced'),
 };
 const padButtons = Array.from(document.querySelectorAll('.pad-btn'));
 
@@ -223,7 +223,7 @@ function evaluateExpression(expression) {
   const constants = {
     pi: Math.PI,
     e: Math.E,
-    ans: lastAnswer
+    ans: lastAnswer,
   };
 
   const functions = {
@@ -328,7 +328,7 @@ function evaluateExpression(expression) {
       }
       ensureArgCount('rand', args, 2);
       return randomBetween(args[0], args[1]);
-    }
+    },
   };
 
   function ensureArgCount(name, args, expectedCount) {

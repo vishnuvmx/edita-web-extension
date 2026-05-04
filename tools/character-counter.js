@@ -4,17 +4,17 @@ const clearBtn = document.getElementById('clearBtn');
 
 function updateStats() {
   const text = textInput.value;
-  
+
   document.getElementById('totalCount').textContent = text.length;
   document.getElementById('spaceCount').textContent = (text.match(/ /g) || []).length;
   document.getElementById('letterCount').textContent = (text.match(/[a-zA-Z]/g) || []).length;
   document.getElementById('digitCount').textContent = (text.match(/\d/g) || []).length;
-  
+
   const letters = (text.match(/[a-zA-Z]/g) || []).length;
   const digits = (text.match(/\d/g) || []).length;
   const spaces = (text.match(/ /g) || []).length;
   const symbols = text.length - letters - digits - spaces;
-  
+
   document.getElementById('symbolCount').textContent = Math.max(0, symbols);
   document.getElementById('lineCount').textContent = text.trim() ? text.split('\n').length : 0;
 }

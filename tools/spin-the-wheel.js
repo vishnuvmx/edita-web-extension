@@ -1,6 +1,6 @@
 const STORAGE_KEYS = {
   entries: 'edita_spin_wheel_entries',
-  history: 'edita_spin_wheel_history'
+  history: 'edita_spin_wheel_history',
 };
 
 const DEFAULT_ENTRIES = ['Coffee', 'Pizza', 'Movie', 'Walk', 'Music', 'Game'];
@@ -78,7 +78,10 @@ function saveHistory() {
 }
 
 function loadState() {
-  const storedEntries = safeParseArray(localStorage.getItem(STORAGE_KEYS.entries), DEFAULT_ENTRIES.slice());
+  const storedEntries = safeParseArray(
+    localStorage.getItem(STORAGE_KEYS.entries),
+    DEFAULT_ENTRIES.slice()
+  );
   const validEntries = storedEntries
     .map((value) => (typeof value === 'string' ? value.trim() : ''))
     .filter((value) => value.length > 0);
@@ -95,7 +98,7 @@ function entryColor(index, total) {
   const hue = Math.round((index * 360) / total);
   return {
     fill: `hsl(${hue} 82% 56%)`,
-    text: hue > 45 && hue < 210 ? '#0f172a' : '#ffffff'
+    text: hue > 45 && hue < 210 ? '#0f172a' : '#ffffff',
   };
 }
 

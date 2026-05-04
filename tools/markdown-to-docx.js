@@ -13,7 +13,7 @@ const crcTable = new Uint32Array(256);
 for (let i = 0; i < 256; i += 1) {
   let value = i;
   for (let j = 0; j < 8; j += 1) {
-    value = (value & 1) ? (0xedb88320 ^ (value >>> 1)) : (value >>> 1);
+    value = value & 1 ? 0xedb88320 ^ (value >>> 1) : value >>> 1;
   }
   crcTable[i] = value >>> 0;
 }
@@ -109,7 +109,7 @@ function buildZip(entries) {
       toLe16(nameBytes.length),
       toLe16(0),
       nameBytes,
-      dataBytes
+      dataBytes,
     ]);
 
     const centralHeader = concatBytes([
@@ -130,7 +130,7 @@ function buildZip(entries) {
       toLe16(0),
       toLe32(0),
       toLe32(localOffset),
-      nameBytes
+      nameBytes,
     ]);
 
     locals.push(localHeader);
@@ -148,7 +148,7 @@ function buildZip(entries) {
     toLe16(entries.length),
     toLe32(centralDirectory.length),
     toLe32(localData.length),
-    toLe16(0)
+    toLe16(0),
   ]);
 
   return concatBytes([localData, centralDirectory, endRecord]);
@@ -242,11 +242,13 @@ function parseMarkdownBlocks(markdown) {
   const blocks = [];
 
   function isSpecialLine(line) {
-    return /^\s*```/.test(line)
-      || /^\s{0,3}#{1,6}\s+/.test(line)
-      || /^\s*>\s?/.test(line)
-      || /^\s*[-*+]\s+/.test(line)
-      || /^\s*\d+\.\s+/.test(line);
+    return (
+      /^\s*```/.test(line) ||
+      /^\s{0,3}#{1,6}\s+/.test(line) ||
+      /^\s*>\s?/.test(line) ||
+      /^\s*[-*+]\s+/.test(line) ||
+      /^\s*\d+\.\s+/.test(line)
+    );
   }
 
   for (let i = 0; i < lines.length; i += 1) {
@@ -294,7 +296,13 @@ function parseMarkdownBlocks(markdown) {
     const orderedMatch = line.match(/^(\s*)(\d+)\.\s+(.+)$/);
     if (orderedMatch) {
       const depth = Math.floor(orderedMatch[1].length / 2);
-      blocks.push({ type: 'list', ordered: true, depth, index: orderedMatch[2], text: orderedMatch[3] });
+      blocks.push({
+        type: 'list',
+        ordered: true,
+        depth,
+        index: orderedMatch[2],
+        text: orderedMatch[3],
+      });
       continue;
     }
 
@@ -312,7 +320,10 @@ function parseMarkdownBlocks(markdown) {
 function toWordParagraph(block) {
   if (block.type === 'heading') {
     const sizeMap = { 1: 42, 2: 34, 3: 30, 4: 26, 5: 24, 6: 22 };
-    const runs = parseInlineRuns(block.text, { bold: true, sizeHalfPoints: sizeMap[block.level] || 24 });
+    const runs = parseInlineRuns(block.text, {
+      bold: true,
+      sizeHalfPoints: sizeMap[block.level] || 24,
+    });
     return `<w:p><w:pPr><w:spacing w:after="180"/></w:pPr>${runs.join('')}</w:p>`;
   }
 
@@ -375,11 +386,11 @@ function buildDocxBlob(markdown) {
   const zipBytes = buildZip([
     { name: '[Content_Types].xml', data: encodeUtf8(contentTypes) },
     { name: '_rels/.rels', data: encodeUtf8(packageRels) },
-    { name: 'word/document.xml', data: encodeUtf8(documentXml) }
+    { name: 'word/document.xml', data: encodeUtf8(documentXml) },
   ]);
 
   return new Blob([zipBytes], {
-    type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   });
 }
 

@@ -10,7 +10,11 @@ function openTool(card) {
     return;
   }
 
-  if (!['qr', 'youtube-thumbnail'].includes(card.dataset.tool) || !chrome.tabs || typeof chrome.tabs.query !== 'function') {
+  if (
+    !['qr', 'youtube-thumbnail', 'youtube-playlist-analyzer'].includes(card.dataset.tool) ||
+    !chrome.tabs ||
+    typeof chrome.tabs.query !== 'function'
+  ) {
     window.location.href = href;
     return;
   }
@@ -42,7 +46,7 @@ function filterTools(searchQuery) {
   cards.forEach((card) => {
     const toolInfo = getToolName(card);
     const isVisible = query === '' || toolInfo.includes(query);
-    
+
     if (isVisible) {
       card.classList.remove('hidden');
       visibleCount++;

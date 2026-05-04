@@ -4,7 +4,8 @@ function closeSidePanelWithWindow(windowId, sendResponse) {
     return;
   }
 
-  chrome.sidePanel.close({ windowId })
+  chrome.sidePanel
+    .close({ windowId })
     .then(() => sendResponse({ success: true }))
     .catch((error) => {
       console.error('Unable to close side panel:', error);
@@ -18,22 +19,31 @@ function downloadFile(url, filename, sendResponse) {
     return;
   }
 
-  chrome.downloads.download({
-    url,
-    filename,
-    conflictAction: 'uniquify',
-    saveAs: false
-  }, (downloadId) => {
-    if (chrome.runtime.lastError || typeof downloadId !== 'number') {
-      sendResponse({ success: false, error: chrome.runtime.lastError?.message || 'Download failed' });
-      return;
+  chrome.downloads.download(
+    {
+      url,
+      filename,
+      conflictAction: 'uniquify',
+      saveAs: false,
+    },
+    (downloadId) => {
+      if (chrome.runtime.lastError || typeof downloadId !== 'number') {
+        sendResponse({
+          success: false,
+          error: chrome.runtime.lastError?.message || 'Download failed',
+        });
+        return;
+      }
+      sendResponse({ success: true, downloadId });
     }
-    sendResponse({ success: true, downloadId });
-  });
+  );
 }
 
 function showToastOnActiveTab(message, sendResponse) {
-  const toastMessage = typeof message?.message === 'string' && message.message.trim() ? message.message : 'Time is up.';
+  const toastMessage =
+    typeof message?.message === 'string' && message.message.trim()
+      ? message.message
+      : 'Time is up.';
   const toastTone = message?.tone === 'error' ? 'error' : 'success';
 
   chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
@@ -44,18 +54,22 @@ function showToastOnActiveTab(message, sendResponse) {
       return;
     }
 
-    chrome.tabs.sendMessage(activeTab.id, {
-      action: 'showToast',
-      message: toastMessage,
-      tone: toastTone
-    }, () => {
-      if (chrome.runtime.lastError) {
-        sendResponse({ success: false, error: chrome.runtime.lastError.message });
-        return;
-      }
+    chrome.tabs.sendMessage(
+      activeTab.id,
+      {
+        action: 'showToast',
+        message: toastMessage,
+        tone: toastTone,
+      },
+      () => {
+        if (chrome.runtime.lastError) {
+          sendResponse({ success: false, error: chrome.runtime.lastError.message });
+          return;
+        }
 
-      sendResponse({ success: true });
-    });
+        sendResponse({ success: true });
+      }
+    );
   });
 }
 
@@ -69,8 +83,11 @@ function registerSidePanelMessageHandler() {
       if (typeof message.windowId === 'number' && message.windowId >= 0) {
         closeSidePanelWithWindow(message.windowId, sendResponse);
       } else {
-        chrome.windows.getLastFocused({ populate: false })
-          .then((currentWindow) => closeSidePanelWithWindow(currentWindow && currentWindow.id, sendResponse))
+        chrome.windows
+          .getLastFocused({ populate: false })
+          .then((currentWindow) =>
+            closeSidePanelWithWindow(currentWindow && currentWindow.id, sendResponse)
+          )
           .catch((error) => {
             console.error('Unable to resolve window for side panel close:', error);
             sendResponse({ success: false, error: String(error) });
@@ -94,5 +111,5 @@ function registerSidePanelMessageHandler() {
 }
 
 self.EditaBackgroundMessages = {
-  registerSidePanelMessageHandler
+  registerSidePanelMessageHandler,
 };

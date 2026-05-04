@@ -31,7 +31,7 @@ function createPanel() {
     pointerEvents: 'none',
     transition: 'transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1), opacity 220ms ease',
     willChange: 'transform, opacity',
-    boxShadow: '-12px 0 32px rgba(15, 23, 42, 0.14)'
+    boxShadow: '-12px 0 32px rgba(15, 23, 42, 0.14)',
   });
 
   const iframe = document.createElement('iframe');
@@ -45,7 +45,7 @@ function createPanel() {
     display: 'block',
     backgroundColor: '#ffffff',
     borderRadius: '16px 0 0 16px',
-    overflow: 'hidden'
+    overflow: 'hidden',
   });
 
   container.appendChild(iframe);
@@ -137,7 +137,7 @@ function createToast() {
     color: '#ffffff',
     background: 'rgba(15, 23, 42, 0.94)',
     boxShadow: '0 14px 40px rgba(15, 23, 42, 0.28)',
-    backdropFilter: 'blur(10px)'
+    backdropFilter: 'blur(10px)',
   });
 
   getHostElement().appendChild(container);
@@ -228,13 +228,20 @@ function bindOverlayLifecycle() {
 
     if (message.action === 'togglePanel') {
       const panel = document.getElementById(PANEL_ID);
-      const isOpen = panel && panel.dataset.open === 'true' ? (closePanel(panel), false) : openPanelForCurrentTab();
+      const isOpen =
+        panel && panel.dataset.open === 'true'
+          ? (closePanel(panel), false)
+          : openPanelForCurrentTab();
       sendResponse({ success: true, isOpen });
       return true;
     }
 
     if (message.action === 'showToast' || message.action === 'showTimerToast') {
-      showToast(typeof message.message === 'string' && message.message.trim() ? message.message : 'Time is up.');
+      showToast(
+        typeof message.message === 'string' && message.message.trim()
+          ? message.message
+          : 'Time is up.'
+      );
       sendResponse({ success: true });
       return true;
     }

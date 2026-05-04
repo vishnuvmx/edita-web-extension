@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mouse Accuracy Checker</title>
+  <link rel="stylesheet" href="tool-base.css">
+  <style>
+    .mouse-main {
+      font-size: 15.5px;
+      line-height: 1.6;
+    }
+
+    .mouse-main h1 {
+      font-size: 40px;
+      line-height: 1.12;
+      margin-bottom: 10px;
+    }
+
+    .accent {
+      color: var(--brand);
+    }
+
+    .tool-section {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid #e2ecf7;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 8px 20px rgba(2, 6, 23, 0.04);
+      margin-bottom: 14px;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      color: #475569;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .controls button {
+      margin-top: 0;
+      font-family: "Poppins";
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px 10px;
+    }
+
+    .secondary {
+      background: linear-gradient(180deg, #ffffff 0%, #f4f7fb 100%);
+      color: #0f172a;
+      border: 1px solid #d0dbe8;
+      box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+    }
+
+    .arena-wrap {
+      border: 1px solid #dbe7f3;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 22% 16%, rgba(16, 185, 129, 0.16), transparent 45%),
+        linear-gradient(180deg, #fbfdff 0%, #edf5ff 100%);
+      padding: 10px;
+    }
+
+    .arena {
+      position: relative;
+      width: 100%;
+      min-height: 280px;
+      border-radius: 10px;
+      border: 1px dashed #b9cbe1;
+      overflow: hidden;
+      cursor: crosshair;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+
+    .target-dot {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      background: radial-gradient(circle at 30% 30%, #f97316 0%, #ea580c 70%);
+      box-shadow: 0 8px 16px rgba(234, 88, 12, 0.38);
+      transform: translate(-50%, -50%);
+      display: none;
+    }
+
+    .target-dot.active {
+      display: block;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .stat-card {
+      border: 1px solid #dbe7f3;
+      border-radius: 12px;
+      background: #f8fbff;
+      padding: 10px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    .stat-value {
+      font-family: "Bricolage Grotesque", "Segoe UI", sans-serif;
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .stat-value.small {
+      font-size: 19px;
+    }
+
+    .status {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #d9e4f1;
+      background: #f8fbff;
+      font-size: 13px;
+    }
+
+    @media (max-width: 560px) {
+      .controls {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar">
+      <a href="../sidepanel.html" class="back-link">&larr; Back to Tools</a>
+    </div>
+
+    <section class="card mouse-main">
+      <h1>Mouse Accuracy <span class="accent">Checker</span></h1>
+      <p>Click the moving target dot as fast as you can. Every miss affects click accuracy.</p>
+
+      <div class="tool-section">
+        <span class="section-label">Challenge Setup</span>
+        <div>
+          <label for="targetCount">Target Hits Goal</label>
+          <input id="targetCount" type="number" min="5" max="100" value="20">
+        </div>
+
+        <div class="controls">
+          <button id="startBtn" type="button">Start Challenge</button>
+          <button id="resetBtn" class="secondary" type="button">Reset</button>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <span class="section-label">Click Arena</span>
+        <div class="arena-wrap">
+          <div id="arena" class="arena" aria-label="Mouse accuracy target arena">
+            <button id="targetDot" class="target-dot" type="button" aria-label="Target dot"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tool-section">
+        <span class="section-label">Performance Stats</span>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Completion Time</div>
+            <div class="stat-value small" id="completionTime">00:00:000</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Click Accuracy</div>
+            <div class="stat-value" id="accuracy">0.00%</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Hits / Goal</div>
+            <div class="stat-value" id="hitsGoal">0 / 20</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Misses</div>
+            <div class="stat-value" id="misses">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Average Reaction</div>
+            <div class="stat-value" id="avgReaction">0 ms</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Clicks</div>
+            <div class="stat-value" id="totalClicks">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script src="tool-base-footer.js"></script>
+  <script src="mouse-accuracy-checker.js"></script>
+</body>
+</html>

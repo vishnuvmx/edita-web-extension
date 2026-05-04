@@ -180,7 +180,10 @@ function convertMarkdown() {
     lastHeaders = first.headers;
     lastRows = first.rows;
     csvOutput.value = buildCsv(lastHeaders, lastRows);
-    setStatus(`Converted table with ${lastRows.length} row(s) and ${lastHeaders.length} column(s).`, 'success');
+    setStatus(
+      `Converted table with ${lastRows.length} row(s) and ${lastHeaders.length} column(s).`,
+      'success'
+    );
     return;
   }
 
@@ -200,7 +203,10 @@ function convertMarkdown() {
   lastHeaders = ['Text'];
   lastRows = lines.map((line) => [line]);
   csvOutput.value = buildCsv(lastHeaders, lastRows);
-  setStatus('No Markdown table found. Exported non-empty lines as a single Text column.', 'success');
+  setStatus(
+    'No Markdown table found. Exported non-empty lines as a single Text column.',
+    'success'
+  );
 }
 
 function downloadExcel() {

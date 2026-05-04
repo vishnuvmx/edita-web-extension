@@ -20,7 +20,9 @@ function setStatus(message, tone = 'neutral') {
 }
 
 function getFlags() {
-  return Array.from(document.querySelectorAll('.flag-chip input:checked')).map((checkbox) => checkbox.value).join('');
+  return Array.from(document.querySelectorAll('.flag-chip input:checked'))
+    .map((checkbox) => checkbox.value)
+    .join('');
 }
 
 function collectMatches(regex, text) {

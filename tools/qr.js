@@ -45,14 +45,16 @@ function renderPreview() {
   previewBox.innerHTML = '';
 
   if (!value) {
-    previewBox.innerHTML = '<div class="qr-empty-state">Enter a URL or text to generate a QR code</div>';
+    previewBox.innerHTML =
+      '<div class="qr-empty-state">Enter a URL or text to generate a QR code</div>';
     return;
   }
 
   const fgColorVal = normalizeColor(qrColor.value);
-  const bgColorVal = bgTransparent && bgTransparent.checked
-    ? '#ffffff'
-    : normalizeColor(bgColor ? bgColor.value : '#ffffff');
+  const bgColorVal =
+    bgTransparent && bgTransparent.checked
+      ? '#ffffff'
+      : normalizeColor(bgColor ? bgColor.value : '#ffffff');
 
   buildQrImage(value, fgColorVal, bgColorVal)
     .then((image) => {

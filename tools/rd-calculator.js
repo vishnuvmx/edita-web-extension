@@ -21,7 +21,7 @@ function toCurrency(value) {
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
-    maximumFractionDigits: 0
+    maximumFractionDigits: 0,
   }).format(value);
 }
 
@@ -50,7 +50,8 @@ function calculateRD() {
   if (monthlyRate === 0) {
     maturityValue = totalInvested;
   } else {
-    maturityValue = monthly * (((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate));
+    maturityValue =
+      monthly * (((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate));
   }
 
   const interest = maturityValue - totalInvested;

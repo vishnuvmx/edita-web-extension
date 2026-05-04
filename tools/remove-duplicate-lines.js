@@ -9,7 +9,7 @@ const copyBtn = document.getElementById('copyBtn');
 function removeDuplicates() {
   const lines = inputText.value.split('\n');
   const uniqueLines = [...new Set(lines)];
-  
+
   originalCount.textContent = lines.length;
   uniqueCount.textContent = uniqueLines.length;
   outputText.value = uniqueLines.join('\n');

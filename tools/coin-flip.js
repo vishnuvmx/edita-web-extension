@@ -80,7 +80,7 @@ function flipCoin() {
     stopFlippingVisuals();
     setCoinFace(result);
     updateStats(result);
-    
+
     const resultText = result === 'H' ? 'Heads' : 'Tails';
     setStatus(`You flipped ${resultText}!`, 'success');
 

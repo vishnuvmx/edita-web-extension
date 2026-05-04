@@ -19,7 +19,7 @@ const state = {
   remainingSeconds: 60,
   running: false,
   intervalId: null,
-  endTimeMs: null
+  endTimeMs: null,
 };
 
 function saveState() {
@@ -27,7 +27,7 @@ function saveState() {
     totalSeconds: state.totalSeconds,
     remainingSeconds: state.remainingSeconds,
     running: state.running,
-    endTimeMs: state.endTimeMs
+    endTimeMs: state.endTimeMs,
   };
 
   try {
@@ -54,7 +54,10 @@ function loadState() {
     const endTimeMs = Number.parseInt(saved.endTimeMs, 10);
 
     state.totalSeconds = Number.isFinite(totalSeconds) && totalSeconds > 0 ? totalSeconds : 60;
-    state.remainingSeconds = Number.isFinite(remainingSeconds) && remainingSeconds >= 0 ? remainingSeconds : state.totalSeconds;
+    state.remainingSeconds =
+      Number.isFinite(remainingSeconds) && remainingSeconds >= 0
+        ? remainingSeconds
+        : state.totalSeconds;
     state.running = saved.running === true;
     state.endTimeMs = Number.isFinite(endTimeMs) ? endTimeMs : null;
     return true;
@@ -73,13 +76,15 @@ function setStatus(message, tone = 'neutral') {
 }
 
 function showTimerToast() {
-  chrome.runtime.sendMessage({
-    action: 'showTimerToast',
-    message: TIMER_TOAST_MESSAGE,
-    tone: 'success'
-  }).catch(() => {
-    // Ignore toast delivery failures; the timer state still updates locally.
-  });
+  chrome.runtime
+    .sendMessage({
+      action: 'showTimerToast',
+      message: TIMER_TOAST_MESSAGE,
+      tone: 'success',
+    })
+    .catch(() => {
+      // Ignore toast delivery failures; the timer state still updates locally.
+    });
 }
 
 function formatTime(totalSeconds) {
@@ -92,7 +97,7 @@ function formatTime(totalSeconds) {
 function applyInputsToState() {
   const minutes = Math.max(0, Number.parseInt(minutesInput.value, 10) || 0);
   const seconds = Math.min(59, Math.max(0, Number.parseInt(secondsInput.value, 10) || 0));
-  const total = (minutes * 60) + seconds;
+  const total = minutes * 60 + seconds;
 
   if (total <= 0) {
     state.totalSeconds = 1;
@@ -113,7 +118,7 @@ function setInputsFromSeconds(totalSeconds) {
 }
 
 function updateRing() {
-  const progressRatio = state.totalSeconds > 0 ? (state.remainingSeconds / state.totalSeconds) : 0;
+  const progressRatio = state.totalSeconds > 0 ? state.remainingSeconds / state.totalSeconds : 0;
   const offset = CIRCUMFERENCE * (1 - progressRatio);
   ringProgress.style.strokeDashoffset = String(offset);
 }
@@ -182,7 +187,7 @@ function startTimer() {
     }
 
     state.running = true;
-    state.endTimeMs = Date.now() + (state.remainingSeconds * 1000);
+    state.endTimeMs = Date.now() + state.remainingSeconds * 1000;
     state.intervalId = setInterval(tick, 1000);
     saveState();
     setStatus('Countdown started.');

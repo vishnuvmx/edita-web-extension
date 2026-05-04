@@ -22,7 +22,7 @@ function toCurrency(value) {
   return new Intl.NumberFormat('en-IN', {
     style: 'currency',
     currency: 'INR',
-    maximumFractionDigits: 0
+    maximumFractionDigits: 0,
   }).format(value);
 }
 
@@ -45,7 +45,7 @@ function calculateCompoundInterest() {
   timeInput.value = String(Math.round(time));
 
   // A = P(1 + r/100n)^(nt)
-  const amount = principal * Math.pow(1 + (rate / 100 / frequency), frequency * time);
+  const amount = principal * Math.pow(1 + rate / 100 / frequency, frequency * time);
   const interest = amount - principal;
 
   principalResultEl.textContent = toCurrency(principal);

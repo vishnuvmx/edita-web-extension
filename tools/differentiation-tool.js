@@ -42,7 +42,7 @@ function secondDerivative(expression, point, epsilon) {
   const forward = evaluateAt(expression, point + epsilon);
   const center = evaluateAt(expression, point);
   const backward = evaluateAt(expression, point - epsilon);
-  return (forward - (2 * center) + backward) / (epsilon * epsilon);
+  return (forward - 2 * center + backward) / (epsilon * epsilon);
 }
 
 function nthDerivative(expression, point, order, epsilon) {

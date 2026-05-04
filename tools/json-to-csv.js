@@ -70,7 +70,9 @@ function convertJson() {
 
     rows.forEach((row) => {
       if (row && typeof row === 'object' && !Array.isArray(row)) {
-        lines.push(headers.map((header) => escapeCsv(toCellValue(row[header]), delimiter)).join(delimiter));
+        lines.push(
+          headers.map((header) => escapeCsv(toCellValue(row[header]), delimiter)).join(delimiter)
+        );
       } else {
         lines.push(escapeCsv(toCellValue(row), delimiter));
       }

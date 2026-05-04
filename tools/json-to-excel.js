@@ -97,7 +97,7 @@ function buildTableData(records) {
 
   return {
     headers,
-    rows: flatRows.map((row) => headers.map((header) => (row[header] ?? '').toString()))
+    rows: flatRows.map((row) => headers.map((header) => (row[header] ?? '').toString())),
   };
 }
 
@@ -118,11 +118,12 @@ function buildCsv(headers, rows) {
 }
 
 function buildExcelHtml(headers, rows) {
-  const escapeHtml = (text) => text
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;');
+  const escapeHtml = (text) =>
+    text
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;');
 
   const headCells = headers.map((header) => `<th>${escapeHtml(header)}</th>`).join('');
   const bodyRows = rows
@@ -161,7 +162,10 @@ function convertJson() {
     lastRows = tableData.rows;
 
     csvOutput.value = buildCsv(lastHeaders, lastRows);
-    setStatus(`Converted ${lastRows.length} row(s) with ${lastHeaders.length} column(s).`, 'success');
+    setStatus(
+      `Converted ${lastRows.length} row(s) with ${lastHeaders.length} column(s).`,
+      'success'
+    );
   } catch (error) {
     lastHeaders = [];
     lastRows = [];

@@ -8,18 +8,18 @@ const clearBtn = document.getElementById('clearBtn');
 
 function updateStats() {
   const text = textInput.value;
-  
+
   // Word count
   const words = text.trim() ? text.trim().split(/\s+/).length : 0;
   wordCountEl.textContent = words;
-  
+
   // Character count
   charCountEl.textContent = text.length;
-  
+
   // Sentence count
   const sentences = text.trim() ? (text.match(/[.!?]+/g) || []).length : 0;
   sentenceCountEl.textContent = sentences;
-  
+
   // Paragraph count
   const paragraphs = text.trim() ? text.trim().split(/\n\n+/).length : 0;
   paragraphCountEl.textContent = paragraphs;
