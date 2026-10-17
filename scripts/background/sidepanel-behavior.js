@@ -42,7 +42,6 @@ async function openPanelForTab(tab) {
     enabled: true,
   });
 
-  await chrome.sidePanel.open({ tabId: tab.id });
   openedTabByWindow.set(windowId, tab.id);
 }
 
@@ -56,8 +55,8 @@ function cleanupClosedTab(tabId) {
 
 function registerSidePanelActionHandler() {
   chrome.action.onClicked.addListener((tab) => {
-    openPanelForTab(tab).catch((error) => {
-      console.error('Unable to open side panel for tab:', error);
+    chrome.sidePanel.open({ windowId: tab.windowId }).catch((error) => {
+      console.error('Unable to open side panel:', error);
     });
   });
 
